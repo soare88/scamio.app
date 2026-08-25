@@ -3,47 +3,285 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Scamio - AI Business OS</title>
+    <title>Scamio - AI Business Operating System</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .app-view { display: none; }
+        .app-view.active { display: block; }
+    </style>
 </head>
 <body class="bg-slate-950 text-slate-100 font-sans antialiased">
-    <div class="min-h-screen flex flex-col justify-between">
-        <!-- Header -->
-        <header class="border-b border-slate-800 px-6 py-4 flex justify-between items-center max-w-6xl mx-auto w-full">
-            <div class="flex items-center space-x-2">
-                <div class="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center font-bold text-white">S</div>
-                <span class="text-xl font-bold tracking-tight">Scamio</span>
-            </div>
-            <div>
-                <span class="text-xs bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 px-3 py-1 rounded-full font-medium">În dezvoltare</span>
-            </div>
-        </header>
 
-        <!-- Main Content -->
-        <main class="flex-1 flex items-center justify-center px-6 py-12">
-            <div class="max-w-2xl text-center space-y-6">
-                <h1 class="text-4xl md:text-5xl font-extrabold tracking-tight">
-                    Platforma AI pentru <span class="text-blue-500">companiile din România</span>.
-                </h1>
-                <p class="text-slate-400 text-lg">
-                    Un singur loc pentru documente, automatizări și inteligență artificială adaptată proceselor tale de business.
-                </p>
-                <div class="pt-4 flex justify-center gap-4">
-                    <div class="bg-slate-900 border border-slate-800 p-4 rounded-xl text-left max-w-sm w-full">
-                        <div class="text-xs text-slate-500 uppercase font-semibold mb-1">Status sistem</div>
-                        <div class="text-sm text-slate-200 flex items-center gap-2">
-                            <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-                            Pregătirea modulelor de business
+    <!-- 1. ECRAN DE LOGIN / AUTENTIFICARE -->
+    <div id="auth-screen" class="app-view active min-h-screen flex items-center justify-center p-4 bg-slate-950">
+        <div class="max-w-md w-full bg-slate-900 border border-slate-800 rounded-2xl p-8 space-y-6 shadow-2xl">
+            <div class="text-center space-y-2">
+                <div class="inline-flex w-12 h-12 bg-blue-600 rounded-xl items-center justify-center font-bold text-white text-xl mb-2 shadow-lg shadow-blue-600/30">S</div>
+                <h1 class="text-2xl font-bold tracking-tight">Scamio OS</h1>
+                <p class="text-slate-400 text-sm">Sistemul de operare AI pentru companiile din România[cite: 1]</p>
+            </div>
+            <form onsubmit="handleLogin(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-medium text-slate-400 uppercase tracking-wider mb-1">Email / Utilizator</label>
+                    <input type="email" id="login-email" required value="admin@exemplu.ro" class="w-full bg-slate-950 border border-slate-800 rounded-lg px-4 py-2.5 text-sm text-slate-200 focus:outline-none focus:border-blue-600">
+                </div>
+                <div>
+                    <label class="block text-xs font-medium text-slate-400 uppercase tracking-wider mb-1">Parolă</label>
+                    <input type="password" id="login-pass" required value="parola123" class="w-full bg-slate-950 border border-slate-800 rounded-lg px-4 py-2.5 text-sm text-slate-200 focus:outline-none focus:border-blue-600">
+                </div>
+                <div>
+                    <label class="block text-xs font-medium text-slate-400 uppercase tracking-wider mb-1">Organizație / Companie</label>
+                    <select id="org-select" class="w-full bg-slate-950 border border-slate-800 rounded-lg px-4 py-2.5 text-sm text-slate-200 focus:outline-none focus:border-blue-600">
+                        <option value="SC Exemplu SRL">SC Exemplu SRL (General / Servicii)</option>
+                        <option value="Distribuție Înghețată SRL">Distribuție Înghețată SRL (Stocuri & Logistică)</option>
+                        <option value="Salon Styling SRL">Salon Styling SRL (Programări & Clienți)</option>
+                    </select>
+                </div>
+                <button type="submit" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-medium py-2.5 rounded-lg text-sm transition shadow-lg shadow-blue-600/20">
+                    Conectare în Platformă
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- 2. APLICAȚIA PRINCIPALĂ (DUPĂ LOGIN) -->
+    <div id="main-app" class="app-view h-screen overflow-hidden flex">
+        
+        <!-- SIDEBAR MENIU MODULAR -->
+        <aside class="w-72 border-r border-slate-800 bg-slate-900/60 flex flex-col justify-between">
+            <div class="p-6">
+                <div class="flex items-center space-x-3 mb-8">
+                    <div class="w-9 h-9 bg-blue-600 rounded-xl flex items-center justify-center font-bold text-white shadow-lg shadow-blue-600/30">S</div>
+                    <div>
+                        <span class="text-lg font-bold tracking-tight block">Scamio OS</span>
+                        <span class="text-xs text-blue-400 font-medium">Business Intelligence</span>
+                    </div>
+                </div>
+                
+                <nav class="space-y-1.5 overflow-y-auto max-h-[calc(100vh-220px)] pr-2">
+                    <button onclick="switchView('dashboard')" class="nav-btn w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl bg-blue-600/10 text-blue-400 font-medium text-sm transition" data-target="dashboard">🏠 Panou General</button>
+                    <button onclick="switchView('anaf')" class="nav-btn w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-slate-400 hover:bg-slate-800/50 hover:text-slate-200 text-sm transition" data-target="anaf">🏛️ ANAF & e-Factura[cite: 1]</button>
+                    <button onclick="switchView('smartbox')" class="nav-btn w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-slate-400 hover:bg-slate-800/50 hover:text-slate-200 text-sm transition" data-target="smartbox">📥 SmartBox & OCR[cite: 1]</button>
+                    <button onclick="switchView('inventory')" class="nav-btn w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-slate-400 hover:bg-slate-800/50 hover:text-slate-200 text-sm transition" data-target="inventory">📦 Stocuri & Produse[cite: 1]</button>
+                    <button onclick="switchView('finance')" class="nav-btn w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-slate-400 hover:bg-slate-800/50 hover:text-slate-200 text-sm transition" data-target="finance">💰 Financiar & Plăți[cite: 1]</button>
+                    <button onclick="switchView('legal')" class="nav-btn w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-slate-400 hover:bg-slate-800/50 hover:text-slate-200 text-sm transition" data-target="legal">⚖️ Contracte & Legal[cite: 1]</button>
+                    <button onclick="switchView('ai')" class="nav-btn w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-slate-400 hover:bg-slate-800/50 hover:text-slate-200 text-sm transition" data-target="ai">🤖 AI Copilot (Chat)[cite: 1]</button>
+                </nav>
+            </div>
+            
+            <div class="p-4 border-t border-slate-800 text-xs text-slate-500 bg-slate-900/30 flex justify-between items-center">
+                <div>
+                    <span id="display-org" class="text-slate-200 font-medium block">Companie</span>
+                    <span class="text-emerald-400 text-[10px]">● Conectat la SPV</span>
+                </div>
+                <button onclick="handleLogout()" class="text-xs text-red-400 hover:underline">Ieșire</button>
+            </div>
+        </aside>
+
+        <!-- CONTINUT PRINCIPAL -->
+        <main class="flex-1 flex flex-col min-w-0 overflow-y-auto bg-slate-950">
+            <header class="border-b border-slate-800 px-8 py-4 flex justify-between items-center bg-slate-900/20 backdrop-blur">
+                <h1 id="view-title" class="text-base font-semibold text-slate-200">Panou General</h1>
+                <div class="flex items-center gap-3">
+                    <span class="text-xs bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 px-3 py-1 rounded-full font-medium">⚡ Automatizări Active</span>
+                    <div class="w-8 h-8 rounded-full bg-blue-600/20 border border-blue-500/30 flex items-center justify-center text-xs font-bold text-blue-400" id="user-initials">AD</div>
+                </div>
+            </header>
+
+            <div class="p-8 max-w-6xl w-full mx-auto">
+                
+                <!-- 1. DASHBOARD VIEW -->
+                <div id="content-dashboard" class="content-section active space-y-6">
+                    <div class="bg-gradient-to-r from-blue-900/30 to-slate-900 border border-slate-800 rounded-2xl p-6 shadow-lg">
+                        <h2 class="text-2xl font-bold mb-1">Bună dimineața!</h2>
+                        <p class="text-slate-400 text-sm">Iată sinteza proactivă generată de AI pentru compania ta astăzi[cite: 1].</p>
+                    </div>
+
+                    <!-- Alerte Proactive AI -->
+                    <div class="bg-blue-950/20 border border-blue-900/40 rounded-xl p-4 flex items-start gap-3">
+                        <span class="text-blue-400 text-lg">💡</span>
+                        <div class="text-sm">
+                            <span class="font-semibold text-blue-300 block mb-0.5">Recomandare Scamio AI:</span>
+                            <span class="text-slate-300">Factura de la furnizorul principal are o valoare cu 18% mai mare decât media ultimelor 6 luni. Verifică detaliile înainte de aprobare[cite: 1].</span>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                        <div class="bg-slate-900/40 border border-slate-800 rounded-xl p-5">
+                            <div class="text-xs text-slate-400 uppercase font-medium mb-1">Încasări Azi</div>
+                            <div class="text-2xl font-bold text-slate-100">6.450 RON</div>
+                        </div>
+                        <div class="bg-slate-900/40 border border-slate-800 rounded-xl p-5">
+                            <div class="text-xs text-slate-400 uppercase font-medium mb-1">Facturi e-Factura Noi</div>
+                            <div class="text-2xl font-bold text-blue-400">4 buc.</div>
+                        </div>
+                        <div class="bg-slate-900/40 border border-slate-800 rounded-xl p-5">
+                            <div class="text-xs text-slate-400 uppercase font-medium mb-1">Stoc Critic</div>
+                            <div class="text-2xl font-bold text-amber-400">2 produse</div>
+                        </div>
+                        <div class="bg-slate-900/40 border border-slate-800 rounded-xl p-5">
+                            <div class="text-xs text-slate-400 uppercase font-medium mb-1">Contracte de Expirat</div>
+                            <div class="text-2xl font-bold text-slate-100">0</div>
                         </div>
                     </div>
                 </div>
+
+                <!-- 2. ANAF & E-FACTURA VIEW -->
+                <div id="content-anaf" class="content-section space-y-6">
+                    <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 space-y-4">
+                        <div class="flex justify-between items-center">
+                            <div>
+                                <h2 class="text-xl font-bold">Integrare Oficială ANAF & e-Factura[cite: 1]</h2>
+                                <p class="text-slate-400 text-sm">Sincronizare automată cu SPV fără bătăi de cap[cite: 1].</p>
+                            </div>
+                            <button class="bg-emerald-600 hover:bg-emerald-500 text-white text-xs px-4 py-2 rounded-lg font-medium transition">Sincronizează SPV Acum</button>
+                        </div>
+                        <div class="border border-slate-800 rounded-xl overflow-hidden">
+                            <table class="w-full text-left text-sm">
+                                <thead class="bg-slate-950 text-slate-400 text-xs uppercase border-b border-slate-800">
+                                    <tr>
+                                        <th class="p-3">Număr Factură</th>
+                                        <th class="p-3">Furnizor / Beneficiar</th>
+                                        <th class="p-3">Valoare</th>
+                                        <th class="p-3">Status ANAF</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-slate-800/60">
+                                    <tr>
+                                        <td class="p-3 font-medium">FAC-2026-089</td>
+                                        <td class="p-3 text-slate-300">SC Furnizor S.A.</td>
+                                        <td class="p-3">1.450 RON</td>
+                                        <td class="p-3"><span class="bg-emerald-500/10 text-emerald-400 px-2 py-0.5 rounded text-xs">Validată SPV</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="p-3 font-medium">FAC-2026-090</td>
+                                        <td class="p-3 text-slate-300">SC Distribuție Serv SRL</td>
+                                        <td class="p-3">3.200 RON</td>
+                                        <td class="p-3"><span class="bg-amber-500/10 text-amber-400 px-2 py-0.5 rounded text-xs">În așteptare</span></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 3. SMARTBOX & OCR VIEW -->
+                <div id="content-smartbox" class="content-section space-y-6">
+                    <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 space-y-4">
+                        <div>
+                            <h2 class="text-xl font-bold">SmartBox / Inbox Universal Documente[cite: 1]</h2>
+                            <p class="text-slate-400 text-sm">Trage fișierele sau folosește camera pentru a extrage datele prin OCR instant[cite: 1].</p>
+                        </div>
+                        <div class="border-2 border-dashed border-slate-800 rounded-xl p-10 text-center bg-slate-950/40 space-y-3">
+                            <div class="text-3xl">📥</div>
+                            <p class="text-slate-300 text-sm font-medium">Aruncă orice factură PDF, chitanță sau contract aici</p>
+                            <p class="text-xs text-slate-500">AI-ul va citi automat datele, va recunoaște furnizorul și va actualiza contabilitatea.</p>
+                            <button class="bg-blue-600 hover:bg-blue-500 text-white text-xs px-4 py-2 rounded-lg font-medium transition">Încarcă Document</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 4. INVENTORY VIEW -->
+                <div id="content-inventory" class="content-section space-y-6">
+                    <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 space-y-4">
+                        <div class="flex justify-between items-center">
+                            <div>
+                                <h2 class="text-xl font-bold">Gestiune Stocuri & Produse</h2>
+                                <p class="text-slate-400 text-sm">Monitorizare în timp real și avertizări de epuizare stoc.</p>
+                            </div>
+                            <button class="bg-blue-600 hover:bg-blue-500 text-white text-xs px-4 py-2 rounded-lg font-medium transition">+ Adaugă Produs</button>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <div class="bg-slate-950 border border-slate-800 rounded-xl p-4">
+                                <div class="text-xs text-slate-400 mb-1">Produs / Material</div>
+                                <div class="font-bold text-slate-200 mb-2">Cutii Carton Standard</div>
+                                <div class="flex justify-between text-xs"><span class="text-slate-400">Stoc: 450 buc.</span><span class="text-emerald-400">Suficient</span></div>
+                            </div>
+                            <div class="bg-slate-950 border border-slate-800 rounded-xl p-4 border-amber-500/30">
+                                <div class="text-xs text-slate-400 mb-1">Produs / Material</div>
+                                <div class="font-bold text-slate-200 mb-2">Chifle Burger (Rulotă)</div>
+                                <div class="flex justify-between text-xs"><span class="text-slate-400">Stoc: 12 buc.</span><span class="text-amber-400 font-bold">Critic - Comandă!</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 5. FINANCE VIEW -->
+                <div id="content-finance" class="content-section space-y-6">
+                    <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6">
+                        <h2 class="text-xl font-bold mb-1">Financiar & Plăți</h2>
+                        <p class="text-slate-400 text-sm mb-4">Urmărirea soldurilor, scadențelor și cashflow-ului firmei[cite: 1].</p>
+                        <div class="bg-slate-950 rounded-xl p-4 border border-slate-800 text-sm text-slate-300">
+                            Toate plățile scadente pentru această săptămână au fost onorate cu succes.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 6. LEGAL VIEW -->
+                <div id="content-legal" class="content-section space-y-6">
+                    <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6">
+                        <h2 class="text-xl font-bold mb-1">Contracte & Legal</h2>
+                        <p class="text-slate-400 text-sm mb-4">Arhivă contracte și detecție automată a clauzelor de risc[cite: 1].</p>
+                        <div class="bg-slate-950 rounded-xl p-4 border border-slate-800 text-sm text-slate-300">
+                            Niciun avertisment juridic activ.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 7. AI COPILOT VIEW -->
+                <div id="content-ai" class="content-section space-y-6">
+                    <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 flex flex-col h-[520px]">
+                        <h2 class="text-xl font-bold mb-1">Asistentul AI Scamio</h2>
+                        <p class="text-slate-400 text-sm mb-4">Scrie o comandă naturală (ex: „Care sunt facturile neîncasate de peste 30 de zile?”)[cite: 1].</p>
+                        
+                        <div class="flex-1 bg-slate-950 rounded-xl p-4 border border-slate-800 overflow-y-auto space-y-3 mb-4">
+                            <div class="flex items-start gap-3">
+                                <div class="w-7 h-7 rounded-full bg-blue-600 flex items-center justify-center text-xs font-bold text-white">AI</div>
+                                <div class="bg-slate-900 border border-slate-800 rounded-xl p-3 text-sm text-slate-200 max-w-lg">
+                                    Salut! Sunt pregătit să te ajut cu operațiunile firmei. Ce acțiune dorești să executăm acum[cite: 1]?
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="flex gap-2">
+                            <input type="text" placeholder="Întreabă sau dă o comandă asistentului..." class="flex-1 bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm text-slate-200 focus:outline-none focus:border-blue-600">
+                            <button class="bg-blue-600 hover:bg-blue-500 text-white px-6 py-3 rounded-xl text-sm font-medium transition">Execută</button>
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </main>
-
-        <!-- Footer -->
-        <footer class="border-t border-slate-800 text-center py-6 text-sm text-slate-500">
-            &copy; 2026 Scamio. Toate drepturile rezervate.
-        </footer>
     </div>
+
+    <script>
+        function handleLogin(event) {
+            event.preventDefault();
+            const org = document.getElementById('org-select').value;
+            document.getElementById('display-org').innerText = org;
+            document.getElementById('auth-screen').classList.remove('active');
+            document.getElementById('main-app').classList.add('active');
+        }
+
+        function handleLogout() {
+            document.getElementById('main-app').classList.remove('active');
+            document.getElementById('auth-screen').classList.add('active');
+        }
+
+        function switchView(targetId) {
+            document.querySelectorAll('.content-section').forEach(el => el.classList.remove('active'));
+            document.getElementById('content-' + targetId).classList.add('active');
+            
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('bg-blue-600/10', 'text-blue-400', 'font-medium');
+                btn.classList.add('text-slate-400');
+                if(btn.getAttribute('data-target') === targetId) {
+                    btn.classList.add('bg-blue-600/10', 'text-blue-400', 'font-medium');
+                    btn.classList.remove('text-slate-400');
+                    document.getElementById('view-title').innerText = btn.innerText.replace(/^[^\w\s]+/, '').trim();
+                }
+            });
+        }
+    </script>
 </body>
 </html>
