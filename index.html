@@ -6,28 +6,28 @@
     <title>Scamio - AI Business Operating System</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        .app-view { display: none; }
-        .app-view.active { display: block; }
+        .app-view { display: none !important; }
+        .app-view.active { display: flex !important; }
     </style>
 </head>
-<body class="bg-slate-950 text-slate-100 font-sans antialiased">
+<body class="bg-slate-950 text-slate-100 font-sans antialiased h-screen overflow-hidden">
 
     <!-- 1. ECRAN DE LOGIN / AUTENTIFICARE -->
-    <div id="auth-screen" class="app-view active min-h-screen flex items-center justify-center p-4 bg-slate-950">
+    <div id="auth-screen" class="app-view active min-h-screen w-full items-center justify-center p-4 bg-slate-950 absolute inset-0 z-50">
         <div class="max-w-md w-full bg-slate-900 border border-slate-800 rounded-2xl p-8 space-y-6 shadow-2xl">
             <div class="text-center space-y-2">
                 <div class="inline-flex w-12 h-12 bg-blue-600 rounded-xl items-center justify-center font-bold text-white text-xl mb-2 shadow-lg shadow-blue-600/30">S</div>
                 <h1 class="text-2xl font-bold tracking-tight">Scamio OS</h1>
                 <p class="text-slate-400 text-sm">Sistemul de operare AI pentru companiile din România</p>
             </div>
-            <form onsubmit="handleLogin(event)" class="space-y-4">
+            <div class="space-y-4">
                 <div>
                     <label class="block text-xs font-medium text-slate-400 uppercase tracking-wider mb-1">Email / Utilizator</label>
-                    <input type="email" id="login-email" required value="admin@exemplu.ro" class="w-full bg-slate-950 border border-slate-800 rounded-lg px-4 py-2.5 text-sm text-slate-200 focus:outline-none focus:border-blue-600">
+                    <input type="email" id="login-email" value="admin@exemplu.ro" class="w-full bg-slate-950 border border-slate-800 rounded-lg px-4 py-2.5 text-sm text-slate-200 focus:outline-none focus:border-blue-600">
                 </div>
                 <div>
                     <label class="block text-xs font-medium text-slate-400 uppercase tracking-wider mb-1">Parolă</label>
-                    <input type="password" id="login-pass" required value="parola123" class="w-full bg-slate-950 border border-slate-800 rounded-lg px-4 py-2.5 text-sm text-slate-200 focus:outline-none focus:border-blue-600">
+                    <input type="password" id="login-pass" value="parola123" class="w-full bg-slate-950 border border-slate-800 rounded-lg px-4 py-2.5 text-sm text-slate-200 focus:outline-none focus:border-blue-600">
                 </div>
                 <div>
                     <label class="block text-xs font-medium text-slate-400 uppercase tracking-wider mb-1">Organizație / Companie</label>
@@ -37,15 +37,15 @@
                         <option value="Salon Styling SRL">Salon Styling SRL (Programări & Clienți)</option>
                     </select>
                 </div>
-                <button type="submit" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-medium py-2.5 rounded-lg text-sm transition shadow-lg shadow-blue-600/20">
+                <button type="button" onclick="handleLogin()" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-medium py-2.5 rounded-lg text-sm transition shadow-lg shadow-blue-600/20 cursor-pointer">
                     Conectare în Platformă
                 </button>
-            </form>
+            </div>
         </div>
     </div>
 
     <!-- 2. APLICAȚIA PRINCIPALĂ (DUPĂ LOGIN) -->
-    <div id="main-app" class="app-view h-screen overflow-hidden flex">
+    <div id="main-app" class="app-view h-screen w-screen overflow-hidden flex">
         
         <!-- SIDEBAR MENIU MODULAR -->
         <aside class="w-72 border-r border-slate-800 bg-slate-900/60 flex flex-col justify-between">
@@ -74,7 +74,7 @@
                     <span id="display-org" class="text-slate-200 font-medium block">Companie</span>
                     <span class="text-emerald-400 text-[10px]">● Conectat la SPV</span>
                 </div>
-                <button onclick="handleLogout()" class="text-xs text-red-400 hover:underline">Ieșire</button>
+                <button onclick="handleLogout()" class="text-xs text-red-400 hover:underline cursor-pointer">Ieșire</button>
             </div>
         </aside>
 
@@ -97,7 +97,6 @@
                         <p class="text-slate-400 text-sm">Iată sinteza proactivă generată de AI pentru compania ta astăzi.</p>
                     </div>
 
-                    <!-- Alerte Proactive AI -->
                     <div class="bg-blue-950/20 border border-blue-900/40 rounded-xl p-4 flex items-start gap-3">
                         <span class="text-blue-400 text-lg">💡</span>
                         <div class="text-sm">
@@ -127,14 +126,14 @@
                 </div>
 
                 <!-- 2. ANAF & E-FACTURA VIEW -->
-                <div id="content-anaf" class="content-section space-y-6">
+                <div id="content-anaf" class="content-section space-y-6" style="display:none;">
                     <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 space-y-4">
                         <div class="flex justify-between items-center">
                             <div>
                                 <h2 class="text-xl font-bold">Integrare Oficială ANAF & e-Factura</h2>
                                 <p class="text-slate-400 text-sm">Sincronizare automată cu SPV fără bătăi de cap.</p>
                             </div>
-                            <button class="bg-emerald-600 hover:bg-emerald-500 text-white text-xs px-4 py-2 rounded-lg font-medium transition">Sincronizează SPV Acum</button>
+                            <button class="bg-emerald-600 hover:bg-emerald-500 text-white text-xs px-4 py-2 rounded-lg font-medium transition cursor-pointer">Sincronizează SPV Acum</button>
                         </div>
                         <div class="border border-slate-800 rounded-xl overflow-hidden">
                             <table class="w-full text-left text-sm">
@@ -166,7 +165,7 @@
                 </div>
 
                 <!-- 3. SMARTBOX & OCR VIEW -->
-                <div id="content-smartbox" class="content-section space-y-6">
+                <div id="content-smartbox" class="content-section space-y-6" style="display:none;">
                     <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 space-y-4">
                         <div>
                             <h2 class="text-xl font-bold">SmartBox / Inbox Universal Documente</h2>
@@ -176,20 +175,20 @@
                             <div class="text-3xl">📥</div>
                             <p class="text-slate-300 text-sm font-medium">Aruncă orice factură PDF, chitanță sau contract aici</p>
                             <p class="text-xs text-slate-500">AI-ul va citi automat datele, va recunoaște furnizorul și va actualiza contabilitatea.</p>
-                            <button class="bg-blue-600 hover:bg-blue-500 text-white text-xs px-4 py-2 rounded-lg font-medium transition">Încarcă Document</button>
+                            <button class="bg-blue-600 hover:bg-blue-500 text-white text-xs px-4 py-2 rounded-lg font-medium transition cursor-pointer">Încarcă Document</button>
                         </div>
                     </div>
                 </div>
 
                 <!-- 4. INVENTORY VIEW -->
-                <div id="content-inventory" class="content-section space-y-6">
+                <div id="content-inventory" class="content-section space-y-6" style="display:none;">
                     <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 space-y-4">
                         <div class="flex justify-between items-center">
                             <div>
                                 <h2 class="text-xl font-bold">Gestiune Stocuri & Produse</h2>
                                 <p class="text-slate-400 text-sm">Monitorizare în timp real și avertizări de epuizare stoc.</p>
                             </div>
-                            <button class="bg-blue-600 hover:bg-blue-500 text-white text-xs px-4 py-2 rounded-lg font-medium transition">+ Adaugă Produs</button>
+                            <button class="bg-blue-600 hover:bg-blue-500 text-white text-xs px-4 py-2 rounded-lg font-medium transition cursor-pointer">+ Adaugă Produs</button>
                         </div>
                         <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                             <div class="bg-slate-950 border border-slate-800 rounded-xl p-4">
@@ -207,7 +206,7 @@
                 </div>
 
                 <!-- 5. FINANCE VIEW -->
-                <div id="content-finance" class="content-section space-y-6">
+                <div id="content-finance" class="content-section space-y-6" style="display:none;">
                     <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6">
                         <h2 class="text-xl font-bold mb-1">Financiar & Plăți</h2>
                         <p class="text-slate-400 text-sm mb-4">Urmărirea soldurilor, scadențelor și cashflow-ului firmei.</p>
@@ -218,7 +217,7 @@
                 </div>
 
                 <!-- 6. LEGAL VIEW -->
-                <div id="content-legal" class="content-section space-y-6">
+                <div id="content-legal" class="content-section space-y-6" style="display:none;">
                     <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6">
                         <h2 class="text-xl font-bold mb-1">Contracte & Legal</h2>
                         <p class="text-slate-400 text-sm mb-4">Arhivă contracte și detecție automată a clauzelor de risc.</p>
@@ -229,7 +228,7 @@
                 </div>
 
                 <!-- 7. AI COPILOT VIEW -->
-                <div id="content-ai" class="content-section space-y-6">
+                <div id="content-ai" class="content-section space-y-6" style="display:none;">
                     <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 flex flex-col h-[520px]">
                         <h2 class="text-xl font-bold mb-1">Asistentul AI Scamio</h2>
                         <p class="text-slate-400 text-sm mb-4">Scrie o comandă naturală (ex: „Care sunt facturile neîncasate de peste 30 de zile?”).</p>
@@ -245,7 +244,7 @@
 
                         <div class="flex gap-2">
                             <input type="text" placeholder="Întreabă sau dă o comandă asistentului..." class="flex-1 bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm text-slate-200 focus:outline-none focus:border-blue-600">
-                            <button class="bg-blue-600 hover:bg-blue-500 text-white px-6 py-3 rounded-xl text-sm font-medium transition">Execută</button>
+                            <button class="bg-blue-600 hover:bg-blue-500 text-white px-6 py-3 rounded-xl text-sm font-medium transition cursor-pointer">Execută</button>
                         </div>
                     </div>
                 </div>
@@ -255,22 +254,44 @@
     </div>
 
     <script>
-        function handleLogin(event) {
-            event.preventDefault();
-            const org = document.getElementById('org-select').value;
-            document.getElementById('display-org').innerText = org;
-            document.getElementById('auth-screen').classList.remove('active');
-            document.getElementById('main-app').classList.add('active');
+        function handleLogin() {
+            const orgSelect = document.getElementById('org-select');
+            const selectedOrg = orgSelect.value;
+            
+            document.getElementById('display-org').innerText = selectedOrg;
+            
+            // Ascunde ecranul de login
+            const authScreen = document.getElementById('auth-screen');
+            authScreen.classList.remove('active');
+            authScreen.style.display = 'none';
+            
+            // Arată aplicația principală
+            const mainApp = document.getElementById('main-app');
+            mainApp.classList.add('active');
+            mainApp.style.display = 'flex';
         }
 
         function handleLogout() {
-            document.getElementById('main-app').classList.remove('active');
-            document.getElementById('auth-screen').classList.add('active');
+            const mainApp = document.getElementById('main-app');
+            mainApp.classList.remove('active');
+            mainApp.style.display = 'none';
+            
+            const authScreen = document.getElementById('auth-screen');
+            authScreen.classList.add('active');
+            authScreen.style.display = 'flex';
         }
 
         function switchView(targetId) {
-            document.querySelectorAll('.content-section').forEach(el => el.classList.remove('active'));
-            document.getElementById('content-' + targetId).classList.add('active');
+            document.querySelectorAll('.content-section').forEach(el => {
+                el.classList.remove('active');
+                el.style.display = 'none';
+            });
+            
+            const target = document.getElementById('content-' + targetId);
+            if(target) {
+                target.classList.add('active');
+                target.style.display = 'block';
+            }
             
             document.querySelectorAll('.nav-btn').forEach(btn => {
                 btn.classList.remove('bg-blue-600/10', 'text-blue-400', 'font-medium');
