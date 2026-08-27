@@ -21,33 +21,17 @@
                 <p class="text-slate-400 text-sm">Sistemul de operare AI pentru companiile din România</p>
             </div>
             <div class="space-y-4">
-                <div>
-                    <label class="block text-xs font-medium text-slate-400 uppercase tracking-wider mb-1">Email / Utilizator</label>
-                    <input type="email" id="login-email" value="admin@exemplu.ro" class="w-full bg-slate-950 border border-slate-800 rounded-lg px-4 py-2.5 text-sm text-slate-200 focus:outline-none focus:border-blue-600">
-                </div>
-                <div>
-                    <label class="block text-xs font-medium text-slate-400 uppercase tracking-wider mb-1">Parolă</label>
-                    <input type="password" id="login-pass" value="parola123" class="w-full bg-slate-950 border border-slate-800 rounded-lg px-4 py-2.5 text-sm text-slate-200 focus:outline-none focus:border-blue-600">
-                </div>
-                <div>
-                    <label class="block text-xs font-medium text-slate-400 uppercase tracking-wider mb-1">Organizație / Companie</label>
-                    <select id="org-select" class="w-full bg-slate-950 border border-slate-800 rounded-lg px-4 py-2.5 text-sm text-slate-200 focus:outline-none focus:border-blue-600">
-                        <option value="SC Exemplu SRL">SC Exemplu SRL (General / Servicii)</option>
-                        <option value="Distribuție Înghețată SRL">Distribuție Înghețată SRL (Stocuri & Logistică)</option>
-                        <option value="Salon Styling SRL">Salon Styling SRL (Programări & Clienți)</option>
-                    </select>
-                </div>
-                <button type="button" onclick="handleLogin()" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-medium py-2.5 rounded-lg text-sm transition shadow-lg shadow-blue-600/20 cursor-pointer">
-                    Conectare în Platformă
+                <button type="button" onclick="handleLogin()" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-medium py-3 rounded-lg text-sm transition shadow-lg shadow-blue-600/20 cursor-pointer mt-4">
+                    Conectare în Prototip
                 </button>
             </div>
         </div>
     </div>
 
-    <!-- 2. APLICAȚIA PRINCIPALĂ (DUPĂ LOGIN) -->
+    <!-- 2. APLICAȚIA PRINCIPALĂ -->
     <div id="main-app" class="app-view h-screen w-screen overflow-hidden flex">
         
-        <!-- SIDEBAR MENIU MODULAR -->
+        <!-- SIDEBAR -->
         <aside class="w-72 border-r border-slate-800 bg-slate-900/60 flex flex-col justify-between">
             <div class="p-6">
                 <div class="flex items-center space-x-3 mb-6">
@@ -62,7 +46,6 @@
                     <button onclick="switchView('dashboard')" class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-xl bg-blue-600/10 text-blue-400 font-medium transition" data-target="dashboard">🏠 Panou General</button>
                     <button onclick="switchView('tasks')" class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-400 hover:bg-slate-800/50 hover:text-slate-200 transition" data-target="tasks">📋 Activități & Taskuri</button>
                     <button onclick="switchView('projects')" class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-400 hover:bg-slate-800/50 hover:text-slate-200 transition" data-target="projects">🚀 Proiecte & Workflow-uri</button>
-                    <button onclick="switchView('clients')" class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-400 hover:bg-slate-800/50 hover:text-slate-200 transition" data-target="clients">👥 Clienți & Furnizori</button>
                     <button onclick="switchView('smartbox')" class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-400 hover:bg-slate-800/50 hover:text-slate-200 transition" data-target="smartbox">📄 Documente / SmartBox</button>
                     <button onclick="switchView('ai')" class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-400 hover:bg-slate-800/50 hover:text-slate-200 transition" data-target="ai">🤖 Scamio AI</button>
                 </nav>
@@ -70,7 +53,7 @@
             
             <div class="p-4 border-t border-slate-800 text-xs text-slate-500 bg-slate-900/30 flex justify-between items-center">
                 <div>
-                    <span id="display-org" class="text-slate-200 font-medium block">Companie</span>
+                    <span class="text-slate-200 font-medium block">Organizație Demo</span>
                     <span class="text-emerald-400 text-[10px]">● Sistem Activ</span>
                 </div>
                 <button onclick="handleLogout()" class="text-xs text-red-400 hover:underline cursor-pointer">Ieșire</button>
@@ -82,143 +65,90 @@
             <header class="border-b border-slate-800 px-8 py-4 flex justify-between items-center bg-slate-900/20 backdrop-blur">
                 <h1 id="view-title" class="text-base font-semibold text-slate-200">Panou General</h1>
                 <div class="flex items-center gap-3">
-                    <span class="text-xs bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 px-3 py-1 rounded-full font-medium">⚡ Prototip Activ</span>
-                    <div class="w-8 h-8 rounded-full bg-blue-600/20 border border-blue-500/30 flex items-center justify-center text-xs font-bold text-blue-400" id="user-initials">AD</div>
+                    <span class="text-xs bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 px-3 py-1 rounded-full font-medium">⚡ Prototip AI Activ</span>
+                    <div class="w-8 h-8 rounded-full bg-blue-600/20 border border-blue-500/30 flex items-center justify-center text-xs font-bold text-blue-400">AD</div>
                 </div>
             </header>
 
             <div class="p-8 max-w-6xl w-full mx-auto">
                 
-                <!-- 1. DASHBOARD VIEW -->
+                <!-- 1. DASHBOARD -->
                 <div id="content-dashboard" class="content-section active space-y-6">
                     <div class="bg-gradient-to-r from-blue-900/30 to-slate-900 border border-slate-800 rounded-2xl p-6 shadow-lg">
                         <h2 class="text-2xl font-bold mb-1">Bună dimineața!</h2>
-                        <p class="text-slate-400 text-sm">Iată sinteza operațională pentru compania ta astăzi[cite: 1].</p>
+                        <p class="text-slate-400 text-sm">Iată sinteza operațională pentru compania ta astăzi.</p>
                     </div>
-
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                         <div class="bg-slate-900/40 border border-slate-800 rounded-xl p-5">
                             <div class="text-xs text-slate-400 uppercase font-medium mb-1">Taskuri Active</div>
-                            <div id="dash-task-count" class="text-2xl font-bold text-blue-400">3 de rezolvat</div>
-                        </div>
-                        <div class="bg-slate-900/40 border border-slate-800 rounded-xl p-5">
-                            <div class="text-xs text-slate-400 uppercase font-medium mb-1">Proiecte În Derulare</div>
-                            <div class="text-2xl font-bold text-slate-100">2 active</div>
-                        </div>
-                        <div class="bg-slate-900/40 border border-slate-800 rounded-xl p-5">
-                            <div class="text-xs text-slate-400 uppercase font-medium mb-1">Alerte Asistent AI</div>
-                            <div class="text-2xl font-bold text-amber-400">1 blocaj</div>
+                            <div class="text-2xl font-bold text-blue-400">4 de rezolvat</div>
                         </div>
                     </div>
                 </div>
 
-                <!-- 2. ACTIVITĂȚI & TASKURI VIEW (MODUL CENTRAL INTERACTIV) -->
+                <!-- 2. ACTIVITĂȚI & TASKURI (CU AI EMAIL EXTRACTION) -->
                 <div id="content-tasks" class="content-section space-y-6" style="display:none;">
-                    <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 space-y-4">
+                    <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 space-y-6">
                         <div class="flex justify-between items-center">
                             <div>
                                 <h2 class="text-xl font-bold">📋 Activități & Taskuri</h2>
-                                <p class="text-slate-400 text-sm">Gestionarea sarcinilor zilnice și urmărirea termenelor limită[cite: 1].</p>
+                                <p class="text-slate-400 text-sm">Urmărește sarcinile manuale și cele extrase automat de AI din emailuri.</p>
                             </div>
                         </div>
 
-                        <!-- Formular adăugare task nou -->
+                        <!-- Formular manual -->
                         <div class="bg-slate-950 border border-slate-800 rounded-xl p-4 flex gap-3">
-                            <input type="text" id="new-task-input" placeholder="Adaugă un task nou (ex: Verificare stoc sau livrare...)" class="flex-1 bg-slate-900 border border-slate-800 rounded-lg px-4 py-2 text-sm text-slate-200 focus:outline-none focus:border-blue-600">
-                            <select id="new-task-priority" class="bg-slate-900 border border-slate-800 rounded-lg px-3 py-2 text-sm text-slate-200 focus:outline-none focus:border-blue-600">
-                                <option value="Normal">Normal</option>
-                                <option value="Urgent">Urgent - Azi</option>
-                            </select>
+                            <input type="text" id="new-task-input" placeholder="Adaugă un task manual..." class="flex-1 bg-slate-900 border border-slate-800 rounded-lg px-4 py-2 text-sm text-slate-200 focus:outline-none focus:border-blue-600">
                             <button onclick="addNewTask()" class="bg-blue-600 hover:bg-blue-500 text-white px-4 py-2 rounded-lg text-sm font-medium transition cursor-pointer">+ Adaugă</button>
                         </div>
 
-                        <!-- Lista de taskuri dinamice -->
-                        <div id="tasks-container" class="space-y-2">
+                        <!-- Lista Taskuri -->
+                        <div id="tasks-container" class="space-y-3">
+                            
+                            <!-- TASK GENERAT DE AI DIN EMAIL (SIMULARE) -->
+                            <div class="bg-slate-900 border border-blue-500/40 rounded-xl p-4 flex flex-col gap-3 relative overflow-hidden shadow-lg shadow-blue-900/10">
+                                <div class="absolute top-0 left-0 w-1 h-full bg-blue-500 shadow-[0_0_10px_rgba(59,130,246,0.8)]"></div>
+                                <div class="flex justify-between items-start pl-2">
+                                    <div class="flex gap-3 items-start">
+                                        <input type="checkbox" class="w-4 h-4 mt-1 rounded bg-slate-900 border-slate-700 text-blue-600 cursor-pointer">
+                                        <div>
+                                            <span class="text-base text-slate-100 font-bold block mb-1">Aprobare etichetă produs nou</span>
+                                            <div class="flex gap-3 text-xs font-medium">
+                                                <span class="flex items-center gap-1 text-slate-300">👤 Responsabil: Maria</span>
+                                                <span class="text-slate-600">|</span>
+                                                <span class="flex items-center gap-1 text-red-400">📅 Termen: Azi, 14:00</span>
+                                                <span class="text-slate-600">|</span>
+                                                <span class="text-amber-400">⚠️ Risc blocaj producție</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <span class="text-[10px] uppercase tracking-wider font-bold bg-blue-600/20 text-blue-400 px-2.5 py-1 rounded-md border border-blue-500/30 flex items-center gap-1">
+                                        🤖 Extras din Email
+                                    </span>
+                                </div>
+                                <div class="bg-slate-950/50 rounded-lg p-3 text-xs text-slate-400 border border-slate-800/60 ml-2">
+                                    <span class="text-blue-400 font-semibold mb-1 block">Context original (Email de la Supply Chain):</span> 
+                                    "Salut, te rog să ne dai aprobarea finală pe etichetele noi până azi la ora 14:00 ca să nu blocăm producția. Maria ar trebui să aibă draftul final."
+                                </div>
+                            </div>
+
+                            <!-- TASK MANUAL -->
                             <div class="bg-slate-950 border border-slate-800 rounded-xl p-4 flex items-center justify-between">
                                 <div class="flex items-center gap-3">
                                     <input type="checkbox" class="w-4 h-4 rounded bg-slate-900 border-slate-700 text-blue-600">
-                                    <span class="text-sm text-slate-200 font-medium">Verificare sold cont curent și confirmare plăți furnizori</span>
+                                    <span class="text-sm text-slate-200 font-medium">Verificare sold cont curent</span>
                                 </div>
-                                <span class="text-xs bg-amber-500/10 text-amber-400 px-2.5 py-1 rounded-md">Urgent - Azi</span>
+                                <span class="text-xs bg-slate-800 text-slate-400 px-2.5 py-1 rounded-md">Adăugat manual</span>
                             </div>
-                            <div class="bg-slate-950 border border-slate-800 rounded-xl p-4 flex items-center justify-between">
-                                <div class="flex items-center gap-3">
-                                    <input type="checkbox" class="w-4 h-4 rounded bg-slate-900 border-slate-700 text-blue-600">
-                                    <span class="text-sm text-slate-200 font-medium">Validare listă produse și stoc critic pentru depozit</span>
-                                </div>
-                                <span class="text-xs bg-blue-500/10 text-blue-400 px-2.5 py-1 rounded-md">În derulare</span>
-                            </div>
+
                         </div>
                     </div>
                 </div>
 
-                <!-- 3. PROIECTE & WORKFLOW-URI VIEW -->
-                <div id="content-projects" class="content-section space-y-6" style="display:none;">
-                    <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 space-y-4">
-                        <div class="flex justify-between items-center">
-                            <div>
-                                <h2 class="text-xl font-bold">🚀 Proiecte & Workflow-uri</h2>
-                                <p class="text-slate-400 text-sm">Monitorizează progresul proiectelor pe etape și fluxuri de lucru[cite: 1].</p>
-                            </div>
-                        </div>
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <div class="bg-slate-950 border border-slate-800 rounded-xl p-5 space-y-3">
-                                <div class="flex justify-between items-center">
-                                    <h3 class="font-bold text-slate-200">Implementare Flux Operațional</h3>
-                                    <span class="text-xs bg-emerald-500/10 text-emerald-400 px-2 py-0.5 rounded">Activ</span>
-                                </div>
-                                <p class="text-xs text-slate-400">Flux automat pentru preluare activități și urmărire termene.</p>
-                                <div class="w-full bg-slate-900 h-2 rounded-full overflow-hidden">
-                                    <div class="bg-blue-600 h-full w-3/4"></div>
-                                </div>
-                                <div class="flex justify-between text-[11px] text-slate-500">
-                                    <span>Progres: 75%</span>
-                                    <span>Termen: Termen scurt</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 4. CLIENȚI & FURNIZORI VIEW -->
-                <div id="content-clients" class="content-section space-y-6" style="display:none;">
-                    <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6">
-                        <h2 class="text-xl font-bold mb-1">👥 Clienți & Furnizori</h2>
-                        <p class="text-slate-400 text-sm mb-4">Directoriu parteneri de afaceri.</p>
-                        <div class="bg-slate-950 rounded-xl p-4 border border-slate-800 text-sm text-slate-300">
-                            Niciun partener selectat recent.
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 5. SMARTBOX VIEW -->
-                <div id="content-smartbox" class="content-section space-y-6" style="display:none;">
-                    <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 space-y-4">
-                        <div>
-                            <h2 class="text-xl font-bold">📄 Documente / SmartBox</h2>
-                            <p class="text-slate-400 text-sm">Inbox universal documente.</p>
-                        </div>
-                        <div class="border-2 border-dashed border-slate-800 rounded-xl p-10 text-center bg-slate-950/40 space-y-3">
-                            <div class="text-3xl">📥</div>
-                            <p class="text-slate-300 text-sm font-medium">Trage fișierele sau documentele aici</p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 6. AI COPILOT VIEW -->
-                <div id="content-ai" class="content-section space-y-6" style="display:none;">
-                    <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 flex flex-col h-[500px]">
-                        <h2 class="text-xl font-bold mb-1">🤖 Scamio AI</h2>
-                        <p class="text-slate-400 text-sm mb-4">Asistentul inteligent pentru operațiuni[cite: 1].</p>
-                        <div class="flex-1 bg-slate-950 rounded-xl p-4 border border-slate-800 overflow-y-auto space-y-3 mb-4 text-sm text-slate-300">
-                            Salut! Cu ce te pot ajuta astăzi în cadrul platformei?
-                        </div>
-                        <div class="flex gap-2">
-                            <input type="text" placeholder="Scrie o comandă..." class="flex-1 bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm text-slate-200 focus:outline-none focus:border-blue-600">
-                            <button class="bg-blue-600 hover:bg-blue-500 text-white px-6 py-3 rounded-xl text-sm font-medium transition cursor-pointer">Trimite</button>
-                        </div>
-                    </div>
-                </div>
+                <!-- ALTE SECTIUNI (Golite pentru demo curat) -->
+                <div id="content-projects" class="content-section" style="display:none;"></div>
+                <div id="content-smartbox" class="content-section" style="display:none;"></div>
+                <div id="content-ai" class="content-section" style="display:none;"></div>
 
             </div>
         </main>
@@ -226,39 +156,19 @@
 
     <script>
         function handleLogin() {
-            const orgSelect = document.getElementById('org-select');
-            document.getElementById('display-org').innerText = orgSelect.value;
-            
-            const authScreen = document.getElementById('auth-screen');
-            authScreen.classList.remove('active');
-            authScreen.style.display = 'none';
-            
-            const mainApp = document.getElementById('main-app');
-            mainApp.classList.add('active');
-            mainApp.style.display = 'flex';
+            document.getElementById('auth-screen').classList.remove('active');
+            document.getElementById('main-app').classList.add('active');
         }
 
         function handleLogout() {
-            const mainApp = document.getElementById('main-app');
-            mainApp.classList.remove('active');
-            mainApp.style.display = 'none';
-            
-            const authScreen = document.getElementById('auth-screen');
-            authScreen.classList.add('active');
-            authScreen.style.display = 'flex';
+            document.getElementById('main-app').classList.remove('active');
+            document.getElementById('auth-screen').classList.add('active');
         }
 
         function switchView(targetId) {
-            document.querySelectorAll('.content-section').forEach(el => {
-                el.classList.remove('active');
-                el.style.display = 'none';
-            });
-            
+            document.querySelectorAll('.content-section').forEach(el => el.classList.remove('active'));
             const target = document.getElementById('content-' + targetId);
-            if(target) {
-                target.classList.add('active');
-                target.style.display = 'block';
-            }
+            if(target) target.classList.add('active');
             
             document.querySelectorAll('.nav-btn').forEach(btn => {
                 btn.classList.remove('bg-blue-600/10', 'text-blue-400', 'font-medium');
@@ -273,25 +183,19 @@
 
         function addNewTask() {
             const input = document.getElementById('new-task-input');
-            const prioritySelect = document.getElementById('new-task-priority');
             const text = input.value.trim();
             if(!text) return;
 
-            const priority = prioritySelect.value;
             const container = document.getElementById('tasks-container');
-
-            const badgeClass = priority === 'Urgent' ? 'bg-amber-500/10 text-amber-400' : 'bg-blue-500/10 text-blue-400';
-
             const taskHtml = `
                 <div class="bg-slate-950 border border-slate-800 rounded-xl p-4 flex items-center justify-between">
                     <div class="flex items-center gap-3">
                         <input type="checkbox" class="w-4 h-4 rounded bg-slate-900 border-slate-700 text-blue-600">
                         <span class="text-sm text-slate-200 font-medium">${text}</span>
                     </div>
-                    <span class="text-xs ${badgeClass} px-2.5 py-1 rounded-md">${priority === 'Urgent' ? 'Urgent - Azi' : 'În derulare'}</span>
+                    <span class="text-xs bg-slate-800 text-slate-400 px-2.5 py-1 rounded-md">Adăugat manual</span>
                 </div>
             `;
-
             container.insertAdjacentHTML('afterbegin', taskHtml);
             input.value = '';
         }
