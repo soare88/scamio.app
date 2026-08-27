@@ -8,6 +8,10 @@
     <style>
         .app-view { display: none !important; }
         .app-view.active { display: flex !important; }
+        .content-section { display: none !important; }
+        .content-section.active { display: block !important; }
+        /* Efect pentru zona de drag & drop */
+        .kanban-zone.drag-over { background-color: rgba(59, 130, 246, 0.1); border-color: rgba(59, 130, 246, 0.5); }
     </style>
 </head>
 <body class="bg-slate-950 text-slate-100 font-sans antialiased h-screen overflow-hidden">
@@ -32,7 +36,7 @@
     <div id="main-app" class="app-view h-screen w-screen overflow-hidden flex">
         
         <!-- SIDEBAR -->
-        <aside class="w-72 border-r border-slate-800 bg-slate-900/60 flex flex-col justify-between">
+        <aside class="w-72 border-r border-slate-800 bg-slate-900/60 flex flex-col justify-between flex-shrink-0">
             <div class="p-6">
                 <div class="flex items-center space-x-3 mb-6">
                     <div class="w-9 h-9 bg-blue-600 rounded-xl flex items-center justify-center font-bold text-white shadow-lg shadow-blue-600/30">S</div>
@@ -43,11 +47,11 @@
                 </div>
                 
                 <nav class="space-y-1 overflow-y-auto max-h-[calc(100vh-200px)] pr-2 text-sm">
-                    <button onclick="switchView('dashboard')" class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-xl bg-blue-600/10 text-blue-400 font-medium transition" data-target="dashboard">🏠 Panou General</button>
-                    <button onclick="switchView('tasks')" class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-400 hover:bg-slate-800/50 hover:text-slate-200 transition" data-target="tasks">📋 Activități & Taskuri</button>
-                    <button onclick="switchView('projects')" class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-400 hover:bg-slate-800/50 hover:text-slate-200 transition" data-target="projects">🚀 Proiecte & Workflow-uri</button>
-                    <button onclick="switchView('smartbox')" class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-400 hover:bg-slate-800/50 hover:text-slate-200 transition" data-target="smartbox">📄 Documente / SmartBox</button>
-                    <button onclick="switchView('ai')" class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-400 hover:bg-slate-800/50 hover:text-slate-200 transition" data-target="ai">🤖 Scamio AI</button>
+                    <button onclick="switchView('dashboard')" class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-xl bg-blue-600/10 text-blue-400 font-medium transition cursor-pointer" data-target="dashboard">🏠 Panou General</button>
+                    <button onclick="switchView('tasks')" class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-400 hover:bg-slate-800/50 hover:text-slate-200 transition cursor-pointer" data-target="tasks">📋 Activități & Taskuri</button>
+                    <button onclick="switchView('projects')" class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-400 hover:bg-slate-800/50 hover:text-slate-200 transition cursor-pointer" data-target="projects">🚀 Proiecte & Workflow-uri</button>
+                    <button onclick="switchView('smartbox')" class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-400 hover:bg-slate-800/50 hover:text-slate-200 transition cursor-pointer" data-target="smartbox">📄 Documente / SmartBox</button>
+                    <button onclick="switchView('ai')" class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-400 hover:bg-slate-800/50 hover:text-slate-200 transition cursor-pointer" data-target="ai">🤖 Scamio AI</button>
                 </nav>
             </div>
             
@@ -61,8 +65,8 @@
         </aside>
 
         <!-- CONTINUT PRINCIPAL -->
-        <main class="flex-1 flex flex-col min-w-0 overflow-y-auto bg-slate-950">
-            <header class="border-b border-slate-800 px-8 py-4 flex justify-between items-center bg-slate-900/20 backdrop-blur">
+        <main class="flex-1 flex flex-col min-w-0 bg-slate-950">
+            <header class="border-b border-slate-800 px-8 py-4 flex justify-between items-center bg-slate-900/20 backdrop-blur z-10">
                 <h1 id="view-title" class="text-base font-semibold text-slate-200">Panou General</h1>
                 <div class="flex items-center gap-3">
                     <span class="text-xs bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 px-3 py-1 rounded-full font-medium">⚡ Prototip AI Activ</span>
@@ -70,83 +74,148 @@
                 </div>
             </header>
 
-            <div class="p-8 max-w-6xl w-full mx-auto">
+            <div class="p-8 w-full h-full overflow-hidden flex flex-col">
                 
                 <!-- 1. DASHBOARD -->
-                <div id="content-dashboard" class="content-section active space-y-6">
+                <div id="content-dashboard" class="content-section active space-y-6 overflow-y-auto h-full pr-4">
                     <div class="bg-gradient-to-r from-blue-900/30 to-slate-900 border border-slate-800 rounded-2xl p-6 shadow-lg">
                         <h2 class="text-2xl font-bold mb-1">Bună dimineața!</h2>
                         <p class="text-slate-400 text-sm">Iată sinteza operațională pentru compania ta astăzi.</p>
                     </div>
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                        <div class="bg-slate-900/40 border border-slate-800 rounded-xl p-5">
+                        <div onclick="switchView('tasks')" class="bg-slate-900/40 border border-slate-800 hover:border-blue-500/50 rounded-xl p-5 cursor-pointer transition shadow-md">
                             <div class="text-xs text-slate-400 uppercase font-medium mb-1">Taskuri Active</div>
-                            <div class="text-2xl font-bold text-blue-400">4 de rezolvat</div>
+                            <div class="text-2xl font-bold text-blue-400">4 de rezolvat &rarr;</div>
+                        </div>
+                        <div onclick="switchView('projects')" class="bg-slate-900/40 border border-slate-800 hover:border-blue-500/50 rounded-xl p-5 cursor-pointer transition shadow-md">
+                            <div class="text-xs text-slate-400 uppercase font-medium mb-1">Proiecte Kanban</div>
+                            <div class="text-2xl font-bold text-emerald-400">Flux Activ &rarr;</div>
                         </div>
                     </div>
                 </div>
 
-                <!-- 2. ACTIVITĂȚI & TASKURI (CU AI EMAIL EXTRACTION) -->
-                <div id="content-tasks" class="content-section space-y-6" style="display:none;">
+                <!-- 2. ACTIVITĂȚI & TASKURI -->
+                <div id="content-tasks" class="content-section space-y-6 overflow-y-auto h-full pr-4" style="display:none;">
                     <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 space-y-6">
-                        <div class="flex justify-between items-center">
-                            <div>
-                                <h2 class="text-xl font-bold">📋 Activități & Taskuri</h2>
-                                <p class="text-slate-400 text-sm">Urmărește sarcinile manuale și cele extrase automat de AI din emailuri.</p>
+                        <h2 class="text-xl font-bold">📋 Activități & Taskuri</h2>
+                        <!-- Lista Taskuri generată anterior... simplificată aici pentru claritate -->
+                        <div class="bg-slate-950 border border-slate-800 rounded-xl p-4 flex items-center justify-between">
+                            <div class="flex items-center gap-3">
+                                <input type="checkbox" class="w-4 h-4 rounded bg-slate-900 border-slate-700 text-blue-600">
+                                <span class="text-sm text-slate-200 font-medium">Verificare sold cont curent</span>
                             </div>
                         </div>
+                    </div>
+                </div>
 
-                        <!-- Formular manual -->
-                        <div class="bg-slate-950 border border-slate-800 rounded-xl p-4 flex gap-3">
-                            <input type="text" id="new-task-input" placeholder="Adaugă un task manual..." class="flex-1 bg-slate-900 border border-slate-800 rounded-lg px-4 py-2 text-sm text-slate-200 focus:outline-none focus:border-blue-600">
-                            <button onclick="addNewTask()" class="bg-blue-600 hover:bg-blue-500 text-white px-4 py-2 rounded-lg text-sm font-medium transition cursor-pointer">+ Adaugă</button>
+                <!-- 3. PROIECTE KANBAN -->
+                <div id="content-projects" class="content-section flex-1 flex flex-col h-full" style="display:none;">
+                    <div class="mb-6 flex justify-between items-center">
+                        <div>
+                            <h2 class="text-xl font-bold mb-1">🚀 Proiect: Lansare Produs Nou</h2>
+                            <p class="text-slate-400 text-sm">Trage cardurile pentru a actualiza progresul[cite: 2].</p>
                         </div>
+                        <button class="bg-blue-600 hover:bg-blue-500 text-white px-4 py-2 rounded-lg text-sm font-medium transition cursor-pointer">+ Adaugă Task</button>
+                    </div>
 
-                        <!-- Lista Taskuri -->
-                        <div id="tasks-container" class="space-y-3">
+                    <!-- KANBAN BOARD -->
+                    <div class="flex-1 overflow-x-auto overflow-y-hidden pb-4">
+                        <div class="flex gap-4 h-full min-w-max">
                             
-                            <!-- TASK GENERAT DE AI DIN EMAIL (SIMULARE) -->
-                            <div class="bg-slate-900 border border-blue-500/40 rounded-xl p-4 flex flex-col gap-3 relative overflow-hidden shadow-lg shadow-blue-900/10">
-                                <div class="absolute top-0 left-0 w-1 h-full bg-blue-500 shadow-[0_0_10px_rgba(59,130,246,0.8)]"></div>
-                                <div class="flex justify-between items-start pl-2">
-                                    <div class="flex gap-3 items-start">
-                                        <input type="checkbox" class="w-4 h-4 mt-1 rounded bg-slate-900 border-slate-700 text-blue-600 cursor-pointer">
-                                        <div>
-                                            <span class="text-base text-slate-100 font-bold block mb-1">Aprobare etichetă produs nou</span>
-                                            <div class="flex gap-3 text-xs font-medium">
-                                                <span class="flex items-center gap-1 text-slate-300">👤 Responsabil: Maria</span>
-                                                <span class="text-slate-600">|</span>
-                                                <span class="flex items-center gap-1 text-red-400">📅 Termen: Azi, 14:00</span>
-                                                <span class="text-slate-600">|</span>
-                                                <span class="text-amber-400">⚠️ Risc blocaj producție</span>
-                                            </div>
+                            <!-- Coloana 1: De Făcut -->
+                            <div class="w-80 flex flex-col bg-slate-900/40 border border-slate-800 rounded-xl flex-shrink-0 max-h-full">
+                                <div class="p-3 border-b border-slate-800 flex justify-between items-center bg-slate-900/80 rounded-t-xl">
+                                    <h3 class="font-semibold text-slate-200 text-sm">De Făcut</h3>
+                                    <span class="bg-slate-800 text-slate-400 text-xs px-2 py-0.5 rounded-full">2</span>
+                                </div>
+                                <div class="p-3 flex-1 overflow-y-auto space-y-3 kanban-zone border-2 border-transparent transition-colors" ondrop="drop(event)" ondragover="allowDrop(event)" ondragleave="dragLeave(event)">
+                                    
+                                    <div class="bg-slate-800/80 border border-slate-700 p-4 rounded-lg cursor-grab active:cursor-grabbing shadow-sm hover:border-slate-500 transition" draggable="true" ondragstart="drag(event)" id="card-1">
+                                        <div class="text-xs text-blue-400 font-medium mb-2">Marketing</div>
+                                        <h4 class="text-sm font-semibold text-slate-100 mb-2">Research trenduri și piață</h4>
+                                        <div class="flex justify-between items-center mt-3">
+                                            <div class="w-6 h-6 rounded-full bg-purple-600 flex items-center justify-center text-[10px] text-white">AD</div>
+                                            <span class="text-xs text-slate-400">14 Aug</span>
                                         </div>
                                     </div>
-                                    <span class="text-[10px] uppercase tracking-wider font-bold bg-blue-600/20 text-blue-400 px-2.5 py-1 rounded-md border border-blue-500/30 flex items-center gap-1">
-                                        🤖 Extras din Email
-                                    </span>
-                                </div>
-                                <div class="bg-slate-950/50 rounded-lg p-3 text-xs text-slate-400 border border-slate-800/60 ml-2">
-                                    <span class="text-blue-400 font-semibold mb-1 block">Context original (Email de la Supply Chain):</span> 
-                                    "Salut, te rog să ne dai aprobarea finală pe etichetele noi până azi la ora 14:00 ca să nu blocăm producția. Maria ar trebui să aibă draftul final."
+
+                                    <div class="bg-slate-800/80 border border-slate-700 p-4 rounded-lg cursor-grab active:cursor-grabbing shadow-sm hover:border-slate-500 transition" draggable="true" ondragstart="drag(event)" id="card-2">
+                                        <div class="text-xs text-emerald-400 font-medium mb-2">Legal / Supply</div>
+                                        <h4 class="text-sm font-semibold text-slate-100 mb-2">Negociere contracte furnizori</h4>
+                                        <div class="flex justify-between items-center mt-3">
+                                            <div class="w-6 h-6 rounded-full bg-emerald-600 flex items-center justify-center text-[10px] text-white">MR</div>
+                                            <span class="text-xs text-slate-400">20 Aug</span>
+                                        </div>
+                                    </div>
+
                                 </div>
                             </div>
 
-                            <!-- TASK MANUAL -->
-                            <div class="bg-slate-950 border border-slate-800 rounded-xl p-4 flex items-center justify-between">
-                                <div class="flex items-center gap-3">
-                                    <input type="checkbox" class="w-4 h-4 rounded bg-slate-900 border-slate-700 text-blue-600">
-                                    <span class="text-sm text-slate-200 font-medium">Verificare sold cont curent</span>
+                            <!-- Coloana 2: În Lucru -->
+                            <div class="w-80 flex flex-col bg-slate-900/40 border border-slate-800 rounded-xl flex-shrink-0 max-h-full">
+                                <div class="p-3 border-b border-slate-800 flex justify-between items-center bg-slate-900/80 rounded-t-xl">
+                                    <h3 class="font-semibold text-slate-200 text-sm flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-blue-500"></span> În Lucru</h3>
+                                    <span class="bg-slate-800 text-slate-400 text-xs px-2 py-0.5 rounded-full">1</span>
                                 </div>
-                                <span class="text-xs bg-slate-800 text-slate-400 px-2.5 py-1 rounded-md">Adăugat manual</span>
+                                <div class="p-3 flex-1 overflow-y-auto space-y-3 kanban-zone border-2 border-transparent transition-colors" ondrop="drop(event)" ondragover="allowDrop(event)" ondragleave="dragLeave(event)">
+                                    
+                                    <div class="bg-slate-800/80 border border-slate-700 p-4 rounded-lg cursor-grab active:cursor-grabbing shadow-sm hover:border-slate-500 transition" draggable="true" ondragstart="drag(event)" id="card-3">
+                                        <div class="text-xs text-amber-400 font-medium mb-2">Design</div>
+                                        <h4 class="text-sm font-semibold text-slate-100 mb-2">Pregătire design etichete</h4>
+                                        <div class="flex justify-between items-center mt-3">
+                                            <div class="w-6 h-6 rounded-full bg-blue-600 flex items-center justify-center text-[10px] text-white">IO</div>
+                                            <span class="text-xs text-slate-400">Azi</span>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <!-- Coloana 3: Blocat / Aprobări -->
+                            <div class="w-80 flex flex-col bg-slate-900/40 border border-slate-800 rounded-xl flex-shrink-0 max-h-full border-l-2 border-l-red-500/50">
+                                <div class="p-3 border-b border-slate-800 flex justify-between items-center bg-slate-900/80 rounded-t-xl">
+                                    <h3 class="font-semibold text-slate-200 text-sm flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-red-500"></span> Blocaje & Aprobări</h3>
+                                </div>
+                                <div class="p-3 flex-1 overflow-y-auto space-y-3 kanban-zone border-2 border-transparent transition-colors" ondrop="drop(event)" ondragover="allowDrop(event)" ondragleave="dragLeave(event)">
+                                    
+                                    <!-- Card Blocat semnalat de AI -->
+                                    <div class="bg-red-950/30 border border-red-500/50 p-4 rounded-lg cursor-grab active:cursor-grabbing shadow-sm hover:border-red-400/80 transition" draggable="true" ondragstart="drag(event)" id="card-4">
+                                        <div class="flex justify-between items-start mb-2">
+                                            <div class="text-xs text-red-400 font-bold uppercase tracking-wide">⚠️ Urgent - Legal</div>
+                                        </div>
+                                        <h4 class="text-sm font-semibold text-slate-100 mb-2">Avizare etichete cf. legislației</h4>
+                                        <p class="text-[11px] text-slate-400 mb-3 border-l-2 border-red-500/50 pl-2">AI: Întârzierea acestui task de 2 zile riscă să blocheze startul producției.</p>
+                                        <div class="flex justify-between items-center">
+                                            <div class="w-6 h-6 rounded-full bg-rose-600 flex items-center justify-center text-[10px] text-white">LG</div>
+                                            <span class="text-xs text-red-400 font-semibold">Întârziat</span>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <!-- Coloana 4: Finalizat -->
+                            <div class="w-80 flex flex-col bg-slate-900/40 border border-slate-800 rounded-xl flex-shrink-0 max-h-full">
+                                <div class="p-3 border-b border-slate-800 flex justify-between items-center bg-slate-900/80 rounded-t-xl">
+                                    <h3 class="font-semibold text-slate-200 text-sm flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-emerald-500"></span> Finalizat</h3>
+                                </div>
+                                <div class="p-3 flex-1 overflow-y-auto space-y-3 kanban-zone border-2 border-transparent transition-colors" ondrop="drop(event)" ondragover="allowDrop(event)" ondragleave="dragLeave(event)">
+                                    
+                                    <div class="bg-slate-900/80 border border-slate-800 p-4 rounded-lg opacity-60 cursor-grab active:cursor-grabbing" draggable="true" ondragstart="drag(event)" id="card-5">
+                                        <h4 class="text-sm font-semibold text-slate-400 line-through mb-2">Stabilire prețuri (Pricing)</h4>
+                                        <div class="flex justify-between items-center">
+                                            <span class="text-[10px] text-emerald-500">✓ Completat ieri</span>
+                                        </div>
+                                    </div>
+
+                                </div>
                             </div>
 
                         </div>
                     </div>
                 </div>
 
-                <!-- ALTE SECTIUNI (Golite pentru demo curat) -->
-                <div id="content-projects" class="content-section" style="display:none;"></div>
+                <!-- ALTE SECTIUNI -->
                 <div id="content-smartbox" class="content-section" style="display:none;"></div>
                 <div id="content-ai" class="content-section" style="display:none;"></div>
 
@@ -155,6 +224,7 @@
     </div>
 
     <script>
+        // Navigare
         function handleLogin() {
             document.getElementById('auth-screen').classList.remove('active');
             document.getElementById('main-app').classList.add('active');
@@ -181,23 +251,58 @@
             });
         }
 
-        function addNewTask() {
-            const input = document.getElementById('new-task-input');
-            const text = input.value.trim();
-            if(!text) return;
+        // --- Logica pentru Drag & Drop Kanban ---
+        function drag(ev) {
+            // Setăm id-ul elementului tras
+            ev.dataTransfer.setData("text", ev.target.id);
+            ev.target.classList.add('opacity-50');
+        }
 
-            const container = document.getElementById('tasks-container');
-            const taskHtml = `
-                <div class="bg-slate-950 border border-slate-800 rounded-xl p-4 flex items-center justify-between">
-                    <div class="flex items-center gap-3">
-                        <input type="checkbox" class="w-4 h-4 rounded bg-slate-900 border-slate-700 text-blue-600">
-                        <span class="text-sm text-slate-200 font-medium">${text}</span>
-                    </div>
-                    <span class="text-xs bg-slate-800 text-slate-400 px-2.5 py-1 rounded-md">Adăugat manual</span>
-                </div>
-            `;
-            container.insertAdjacentHTML('afterbegin', taskHtml);
-            input.value = '';
+        function allowDrop(ev) {
+            ev.preventDefault();
+            // Adaugă clasa de highlight zonei pe care survolăm
+            let targetZone = ev.target.closest('.kanban-zone');
+            if(targetZone) targetZone.classList.add('drag-over');
+        }
+
+        function dragLeave(ev) {
+            let targetZone = ev.target.closest('.kanban-zone');
+            if(targetZone) targetZone.classList.remove('drag-over');
+        }
+
+        function drop(ev) {
+            ev.preventDefault();
+            let data = ev.dataTransfer.getData("text");
+            let draggedElement = document.getElementById(data);
+            
+            if(draggedElement) {
+                draggedElement.classList.remove('opacity-50');
+            }
+
+            // Găsim zona corectă de drop (containerul cu clasa kanban-zone)
+            let targetZone = ev.target.closest('.kanban-zone');
+            
+            if(targetZone && draggedElement) {
+                targetZone.classList.remove('drag-over');
+                targetZone.appendChild(draggedElement);
+                
+                // Opțional: dacă e mutat în "Finalizat", îi dăm o opacitate și îi tăiem titlul
+                if(targetZone.parentElement.querySelector('h3').innerText.includes('Finalizat')) {
+                    draggedElement.classList.add('opacity-60');
+                    let title = draggedElement.querySelector('h4');
+                    if(title && !title.classList.contains('line-through')) {
+                        title.classList.add('line-through', 'text-slate-400');
+                        title.classList.remove('text-slate-100');
+                    }
+                } else {
+                    draggedElement.classList.remove('opacity-60');
+                    let title = draggedElement.querySelector('h4');
+                    if(title && title.classList.contains('line-through')) {
+                        title.classList.remove('line-through', 'text-slate-400');
+                        title.classList.add('text-slate-100');
+                    }
+                }
+            }
         }
     </script>
 </body>
