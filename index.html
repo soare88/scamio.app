@@ -9,14 +9,25 @@
         .app-view { display: none !important; }
         .app-view.active { display: flex !important; }
         .content-section { display: none !important; }
-        .content-section.active { display: block !important; }
+        .content-section.active { display: flex !important; }
+        
         /* Efect pentru zona de drag & drop */
-        .kanban-zone.drag-over { background-color: rgba(59, 130, 246, 0.1); border-color: rgba(59, 130, 246, 0.5); }
+        .kanban-zone.drag-over { background-color: rgba(59, 130, 246, 0.05); border-color: rgba(59, 130, 246, 0.3); }
+        
+        /* Scrollbar-uri invizibile/elegante pentru un aspect premium */
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #334155; }
+        
+        /* Smooth drag transition */
+        .kanban-card { transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease; }
+        .kanban-card:hover { transform: translateY(-2px); }
     </style>
 </head>
 <body class="bg-slate-950 text-slate-100 font-sans antialiased h-screen overflow-hidden">
 
-    <!-- 1. ECRAN DE LOGIN / AUTENTIFICARE -->
+    <!-- 1. ECRAN DE LOGIN -->
     <div id="auth-screen" class="app-view active min-h-screen w-full items-center justify-center p-4 bg-slate-950 absolute inset-0 z-50">
         <div class="max-w-md w-full bg-slate-900 border border-slate-800 rounded-2xl p-8 space-y-6 shadow-2xl">
             <div class="text-center space-y-2">
@@ -36,115 +47,117 @@
     <div id="main-app" class="app-view h-screen w-screen overflow-hidden flex">
         
         <!-- SIDEBAR -->
-        <aside class="w-72 border-r border-slate-800 bg-slate-900/60 flex flex-col justify-between flex-shrink-0">
+        <aside class="w-72 border-r border-slate-800 bg-slate-900/40 backdrop-blur-xl flex flex-col justify-between flex-shrink-0 z-20">
             <div class="p-6">
-                <div class="flex items-center space-x-3 mb-6">
+                <div class="flex items-center space-x-3 mb-8">
                     <div class="w-9 h-9 bg-blue-600 rounded-xl flex items-center justify-center font-bold text-white shadow-lg shadow-blue-600/30">S</div>
                     <div>
                         <span class="text-lg font-bold tracking-tight block">Scamio OS</span>
-                        <span class="text-xs text-blue-400 font-medium">Business Intelligence</span>
+                        <span class="text-[10px] text-blue-400 font-bold tracking-wider uppercase">Business Intelligence</span>
                     </div>
                 </div>
                 
-                <nav class="space-y-1 overflow-y-auto max-h-[calc(100vh-200px)] pr-2 text-sm">
-                    <button onclick="switchView('dashboard')" class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-xl bg-blue-600/10 text-blue-400 font-medium transition cursor-pointer" data-target="dashboard">🏠 Panou General</button>
-                    <button onclick="switchView('tasks')" class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-400 hover:bg-slate-800/50 hover:text-slate-200 transition cursor-pointer" data-target="tasks">📋 Activități & Taskuri</button>
-                    <button onclick="switchView('projects')" class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-400 hover:bg-slate-800/50 hover:text-slate-200 transition cursor-pointer" data-target="projects">🚀 Proiecte & Workflow-uri</button>
-                    <button onclick="switchView('smartbox')" class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-400 hover:bg-slate-800/50 hover:text-slate-200 transition cursor-pointer" data-target="smartbox">📄 Documente / SmartBox</button>
-                    <button onclick="switchView('ai')" class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-400 hover:bg-slate-800/50 hover:text-slate-200 transition cursor-pointer" data-target="ai">🤖 Scamio AI</button>
+                <nav class="space-y-1.5 overflow-y-auto max-h-[calc(100vh-200px)] pr-2 text-sm font-medium">
+                    <button onclick="switchView('dashboard')" class="nav-btn w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl bg-blue-600/10 text-blue-400 transition cursor-pointer" data-target="dashboard">🏠 Panou General</button>
+                    <button onclick="switchView('tasks')" class="nav-btn w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-slate-400 hover:bg-slate-800/50 hover:text-slate-200 transition cursor-pointer" data-target="tasks">📋 Activități & Taskuri</button>
+                    <button onclick="switchView('projects')" class="nav-btn w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-slate-400 hover:bg-slate-800/50 hover:text-slate-200 transition cursor-pointer" data-target="projects">🚀 Proiecte & Workflow</button>
+                    <button onclick="switchView('smartbox')" class="nav-btn w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-slate-400 hover:bg-slate-800/50 hover:text-slate-200 transition cursor-pointer" data-target="smartbox">📄 Documente / SmartBox</button>
+                    <button onclick="switchView('ai')" class="nav-btn w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-slate-400 hover:bg-slate-800/50 hover:text-slate-200 transition cursor-pointer" data-target="ai">🤖 Scamio AI</button>
                 </nav>
             </div>
             
-            <div class="p-4 border-t border-slate-800 text-xs text-slate-500 bg-slate-900/30 flex justify-between items-center">
-                <div>
-                    <span class="text-slate-200 font-medium block">Organizație Demo</span>
-                    <span class="text-emerald-400 text-[10px]">● Sistem Activ</span>
+            <div class="p-5 border-t border-slate-800/50 text-xs text-slate-500 bg-slate-900/20 flex justify-between items-center">
+                <div class="flex items-center gap-2">
+                    <div class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></div>
+                    <span class="text-slate-300 font-medium">Sistem Activ</span>
                 </div>
-                <button onclick="handleLogout()" class="text-xs text-red-400 hover:underline cursor-pointer">Ieșire</button>
+                <button onclick="handleLogout()" class="text-xs text-slate-500 hover:text-red-400 transition cursor-pointer">Ieșire</button>
             </div>
         </aside>
 
         <!-- CONTINUT PRINCIPAL -->
-        <main class="flex-1 flex flex-col min-w-0 bg-slate-950">
-            <header class="border-b border-slate-800 px-8 py-4 flex justify-between items-center bg-slate-900/20 backdrop-blur z-10">
-                <h1 id="view-title" class="text-base font-semibold text-slate-200">Panou General</h1>
-                <div class="flex items-center gap-3">
-                    <span class="text-xs bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 px-3 py-1 rounded-full font-medium">⚡ Prototip AI Activ</span>
-                    <div class="w-8 h-8 rounded-full bg-blue-600/20 border border-blue-500/30 flex items-center justify-center text-xs font-bold text-blue-400">AD</div>
+        <main class="flex-1 flex flex-col min-w-0 bg-slate-950 relative">
+            <!-- Background mesh gradient subtil -->
+            <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-blue-900/10 via-slate-950 to-slate-950 pointer-events-none"></div>
+
+            <header class="border-b border-slate-800/80 px-8 py-5 flex justify-between items-center bg-slate-900/30 backdrop-blur-md z-10 sticky top-0">
+                <h1 id="view-title" class="text-lg font-bold text-slate-100 tracking-tight">Panou General</h1>
+                <div class="flex items-center gap-4">
+                    <span class="text-[10px] uppercase tracking-wider bg-blue-500/10 text-blue-400 border border-blue-500/20 px-3 py-1.5 rounded-full font-bold">Prototip Premium</span>
+                    <div class="w-9 h-9 rounded-full bg-gradient-to-tr from-blue-600 to-indigo-500 flex items-center justify-center text-xs font-bold text-white shadow-lg shadow-blue-500/20 ring-2 ring-slate-900">AD</div>
                 </div>
             </header>
 
-            <div class="p-8 w-full h-full overflow-hidden flex flex-col">
+            <div class="p-8 w-full h-full overflow-hidden flex flex-col z-10">
                 
                 <!-- 1. DASHBOARD -->
-                <div id="content-dashboard" class="content-section active space-y-6 overflow-y-auto h-full pr-4">
-                    <div class="bg-gradient-to-r from-blue-900/30 to-slate-900 border border-slate-800 rounded-2xl p-6 shadow-lg">
-                        <h2 class="text-2xl font-bold mb-1">Bună dimineața!</h2>
-                        <p class="text-slate-400 text-sm">Iată sinteza operațională pentru compania ta astăzi.</p>
+                <div id="content-dashboard" class="content-section active flex-col space-y-6 overflow-y-auto h-full pr-2">
+                    <div class="bg-slate-900/40 border border-slate-800/80 rounded-2xl p-8 backdrop-blur-sm">
+                        <h2 class="text-3xl font-bold mb-2 text-white tracking-tight">Bună dimineața!</h2>
+                        <p class="text-slate-400 text-sm">Sinteza operațională este pregătită pentru tine.</p>
                     </div>
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                        <div onclick="switchView('tasks')" class="bg-slate-900/40 border border-slate-800 hover:border-blue-500/50 rounded-xl p-5 cursor-pointer transition shadow-md">
-                            <div class="text-xs text-slate-400 uppercase font-medium mb-1">Taskuri Active</div>
-                            <div class="text-2xl font-bold text-blue-400">4 de rezolvat &rarr;</div>
-                        </div>
-                        <div onclick="switchView('projects')" class="bg-slate-900/40 border border-slate-800 hover:border-blue-500/50 rounded-xl p-5 cursor-pointer transition shadow-md">
-                            <div class="text-xs text-slate-400 uppercase font-medium mb-1">Proiecte Kanban</div>
-                            <div class="text-2xl font-bold text-emerald-400">Flux Activ &rarr;</div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 2. ACTIVITĂȚI & TASKURI -->
-                <div id="content-tasks" class="content-section space-y-6 overflow-y-auto h-full pr-4" style="display:none;">
-                    <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 space-y-6">
-                        <h2 class="text-xl font-bold">📋 Activități & Taskuri</h2>
-                        <!-- Lista Taskuri generată anterior... simplificată aici pentru claritate -->
-                        <div class="bg-slate-950 border border-slate-800 rounded-xl p-4 flex items-center justify-between">
-                            <div class="flex items-center gap-3">
-                                <input type="checkbox" class="w-4 h-4 rounded bg-slate-900 border-slate-700 text-blue-600">
-                                <span class="text-sm text-slate-200 font-medium">Verificare sold cont curent</span>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div onclick="switchView('projects')" class="group bg-slate-900/40 border border-slate-800/80 hover:bg-slate-800/50 hover:border-blue-500/50 rounded-2xl p-6 cursor-pointer transition-all duration-300">
+                            <div class="flex justify-between items-start mb-4">
+                                <div class="w-10 h-10 rounded-xl bg-blue-500/10 flex items-center justify-center text-blue-400 text-lg group-hover:scale-110 transition-transform">🚀</div>
+                                <span class="text-slate-500 group-hover:text-blue-400 transition-colors">&rarr;</span>
                             </div>
+                            <div class="text-xs text-slate-400 uppercase font-bold tracking-wider mb-1">Proiecte Kanban</div>
+                            <div class="text-2xl font-bold text-slate-100">Deschide Fluxul</div>
                         </div>
                     </div>
                 </div>
 
-                <!-- 3. PROIECTE KANBAN -->
-                <div id="content-projects" class="content-section flex-1 flex flex-col h-full" style="display:none;">
-                    <div class="mb-6 flex justify-between items-center">
+                <!-- 2. TASKURI (Gol pt demo) -->
+                <div id="content-tasks" class="content-section flex-col space-y-6" style="display:none;">
+                    <div class="bg-slate-900/40 border border-slate-800/80 rounded-2xl p-6">
+                        <h2 class="text-xl font-bold">📋 Activități & Taskuri</h2>
+                    </div>
+                </div>
+
+                <!-- 3. PROIECTE KANBAN PREMIUM -->
+                <div id="content-projects" class="content-section flex-1 flex-col h-full" style="display:none;">
+                    <div class="mb-6 flex justify-between items-end">
                         <div>
-                            <h2 class="text-xl font-bold mb-1">🚀 Proiect: Lansare Produs Nou</h2>
-                            <p class="text-slate-400 text-sm">Trage cardurile pentru a actualiza progresul[cite: 2].</p>
+                            <div class="text-xs text-blue-400 font-bold uppercase tracking-wider mb-1">Workflow Activ</div>
+                            <h2 class="text-2xl font-bold text-slate-100 tracking-tight">Lansare Produs Nou</h2>
                         </div>
-                        <button class="bg-blue-600 hover:bg-blue-500 text-white px-4 py-2 rounded-lg text-sm font-medium transition cursor-pointer">+ Adaugă Task</button>
+                        <button class="bg-blue-600 hover:bg-blue-500 text-white px-5 py-2.5 rounded-xl text-sm font-semibold transition-all shadow-lg shadow-blue-600/20 hover:shadow-blue-600/40 cursor-pointer flex items-center gap-2">
+                            <span>+</span> Adaugă Task
+                        </button>
                     </div>
 
                     <!-- KANBAN BOARD -->
-                    <div class="flex-1 overflow-x-auto overflow-y-hidden pb-4">
-                        <div class="flex gap-4 h-full min-w-max">
+                    <div class="flex-1 overflow-x-auto overflow-y-hidden pb-4 -mx-2 px-2">
+                        <div class="flex gap-5 h-full min-w-max items-start">
                             
                             <!-- Coloana 1: De Făcut -->
-                            <div class="w-80 flex flex-col bg-slate-900/40 border border-slate-800 rounded-xl flex-shrink-0 max-h-full">
-                                <div class="p-3 border-b border-slate-800 flex justify-between items-center bg-slate-900/80 rounded-t-xl">
-                                    <h3 class="font-semibold text-slate-200 text-sm">De Făcut</h3>
-                                    <span class="bg-slate-800 text-slate-400 text-xs px-2 py-0.5 rounded-full">2</span>
+                            <div class="w-[340px] flex flex-col bg-slate-900/30 border border-slate-800/60 rounded-2xl flex-shrink-0 max-h-full backdrop-blur-sm">
+                                <div class="p-4 border-b border-slate-800/60 flex justify-between items-center">
+                                    <h3 class="font-bold text-slate-200 text-sm tracking-wide">De Făcut</h3>
+                                    <span class="bg-slate-800 text-slate-300 text-xs font-bold px-2.5 py-1 rounded-lg">2</span>
                                 </div>
-                                <div class="p-3 flex-1 overflow-y-auto space-y-3 kanban-zone border-2 border-transparent transition-colors" ondrop="drop(event)" ondragover="allowDrop(event)" ondragleave="dragLeave(event)">
+                                <div class="p-3 flex-1 overflow-y-auto space-y-3 kanban-zone border-2 border-transparent transition-colors rounded-b-2xl" ondrop="drop(event)" ondragover="allowDrop(event)" ondragleave="dragLeave(event)">
                                     
-                                    <div class="bg-slate-800/80 border border-slate-700 p-4 rounded-lg cursor-grab active:cursor-grabbing shadow-sm hover:border-slate-500 transition" draggable="true" ondragstart="drag(event)" id="card-1">
-                                        <div class="text-xs text-blue-400 font-medium mb-2">Marketing</div>
-                                        <h4 class="text-sm font-semibold text-slate-100 mb-2">Research trenduri și piață</h4>
-                                        <div class="flex justify-between items-center mt-3">
-                                            <div class="w-6 h-6 rounded-full bg-purple-600 flex items-center justify-center text-[10px] text-white">AD</div>
-                                            <span class="text-xs text-slate-400">14 Aug</span>
+                                    <div class="kanban-card bg-slate-800/40 border border-slate-700/50 hover:bg-slate-800/60 p-4 rounded-xl cursor-grab active:cursor-grabbing shadow-sm" draggable="true" ondragstart="drag(event)" id="card-1">
+                                        <div class="flex justify-between items-start mb-2.5">
+                                            <span class="text-[10px] uppercase font-bold tracking-wider text-purple-400 bg-purple-400/10 px-2 py-0.5 rounded">Marketing</span>
+                                        </div>
+                                        <h4 class="text-sm font-semibold text-slate-200 leading-snug mb-4">Research trenduri și piață</h4>
+                                        <div class="flex justify-between items-center pt-3 border-t border-slate-700/50">
+                                            <span class="text-xs font-medium text-slate-400 flex items-center gap-1.5">📅 14 Aug</span>
+                                            <div class="w-6 h-6 rounded-full bg-purple-600 flex items-center justify-center text-[10px] font-bold text-white shadow-sm ring-2 ring-slate-900">AD</div>
                                         </div>
                                     </div>
 
-                                    <div class="bg-slate-800/80 border border-slate-700 p-4 rounded-lg cursor-grab active:cursor-grabbing shadow-sm hover:border-slate-500 transition" draggable="true" ondragstart="drag(event)" id="card-2">
-                                        <div class="text-xs text-emerald-400 font-medium mb-2">Legal / Supply</div>
-                                        <h4 class="text-sm font-semibold text-slate-100 mb-2">Negociere contracte furnizori</h4>
-                                        <div class="flex justify-between items-center mt-3">
-                                            <div class="w-6 h-6 rounded-full bg-emerald-600 flex items-center justify-center text-[10px] text-white">MR</div>
-                                            <span class="text-xs text-slate-400">20 Aug</span>
+                                    <div class="kanban-card bg-slate-800/40 border border-slate-700/50 hover:bg-slate-800/60 p-4 rounded-xl cursor-grab active:cursor-grabbing shadow-sm" draggable="true" ondragstart="drag(event)" id="card-2">
+                                        <div class="flex justify-between items-start mb-2.5">
+                                            <span class="text-[10px] uppercase font-bold tracking-wider text-emerald-400 bg-emerald-400/10 px-2 py-0.5 rounded">Legal / Supply</span>
+                                        </div>
+                                        <h4 class="text-sm font-semibold text-slate-200 leading-snug mb-4">Negociere contracte furnizori</h4>
+                                        <div class="flex justify-between items-center pt-3 border-t border-slate-700/50">
+                                            <span class="text-xs font-medium text-slate-400 flex items-center gap-1.5">📅 20 Aug</span>
+                                            <div class="w-6 h-6 rounded-full bg-emerald-600 flex items-center justify-center text-[10px] font-bold text-white shadow-sm ring-2 ring-slate-900">MR</div>
                                         </div>
                                     </div>
 
@@ -152,19 +165,23 @@
                             </div>
 
                             <!-- Coloana 2: În Lucru -->
-                            <div class="w-80 flex flex-col bg-slate-900/40 border border-slate-800 rounded-xl flex-shrink-0 max-h-full">
-                                <div class="p-3 border-b border-slate-800 flex justify-between items-center bg-slate-900/80 rounded-t-xl">
-                                    <h3 class="font-semibold text-slate-200 text-sm flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-blue-500"></span> În Lucru</h3>
-                                    <span class="bg-slate-800 text-slate-400 text-xs px-2 py-0.5 rounded-full">1</span>
+                            <div class="w-[340px] flex flex-col bg-slate-900/30 border border-slate-800/60 rounded-2xl flex-shrink-0 max-h-full backdrop-blur-sm">
+                                <div class="p-4 border-b border-slate-800/60 flex justify-between items-center">
+                                    <h3 class="font-bold text-slate-200 text-sm tracking-wide flex items-center gap-2">
+                                        <span class="w-2 h-2 rounded-full bg-blue-500 shadow-[0_0_8px_rgba(59,130,246,0.8)]"></span> În Lucru
+                                    </h3>
+                                    <span class="bg-slate-800 text-slate-300 text-xs font-bold px-2.5 py-1 rounded-lg">1</span>
                                 </div>
-                                <div class="p-3 flex-1 overflow-y-auto space-y-3 kanban-zone border-2 border-transparent transition-colors" ondrop="drop(event)" ondragover="allowDrop(event)" ondragleave="dragLeave(event)">
+                                <div class="p-3 flex-1 overflow-y-auto space-y-3 kanban-zone border-2 border-transparent transition-colors rounded-b-2xl" ondrop="drop(event)" ondragover="allowDrop(event)" ondragleave="dragLeave(event)">
                                     
-                                    <div class="bg-slate-800/80 border border-slate-700 p-4 rounded-lg cursor-grab active:cursor-grabbing shadow-sm hover:border-slate-500 transition" draggable="true" ondragstart="drag(event)" id="card-3">
-                                        <div class="text-xs text-amber-400 font-medium mb-2">Design</div>
-                                        <h4 class="text-sm font-semibold text-slate-100 mb-2">Pregătire design etichete</h4>
-                                        <div class="flex justify-between items-center mt-3">
-                                            <div class="w-6 h-6 rounded-full bg-blue-600 flex items-center justify-center text-[10px] text-white">IO</div>
-                                            <span class="text-xs text-slate-400">Azi</span>
+                                    <div class="kanban-card bg-slate-800/40 border border-blue-500/30 hover:bg-slate-800/60 p-4 rounded-xl cursor-grab active:cursor-grabbing shadow-lg shadow-blue-900/10" draggable="true" ondragstart="drag(event)" id="card-3">
+                                        <div class="flex justify-between items-start mb-2.5">
+                                            <span class="text-[10px] uppercase font-bold tracking-wider text-amber-400 bg-amber-400/10 px-2 py-0.5 rounded">Design</span>
+                                        </div>
+                                        <h4 class="text-sm font-semibold text-slate-200 leading-snug mb-4">Pregătire design etichete</h4>
+                                        <div class="flex justify-between items-center pt-3 border-t border-slate-700/50">
+                                            <span class="text-xs font-medium text-blue-400 flex items-center gap-1.5">⚡ Azi</span>
+                                            <div class="w-6 h-6 rounded-full bg-blue-600 flex items-center justify-center text-[10px] font-bold text-white shadow-sm ring-2 ring-slate-900">IO</div>
                                         </div>
                                     </div>
 
@@ -172,22 +189,29 @@
                             </div>
 
                             <!-- Coloana 3: Blocat / Aprobări -->
-                            <div class="w-80 flex flex-col bg-slate-900/40 border border-slate-800 rounded-xl flex-shrink-0 max-h-full border-l-2 border-l-red-500/50">
-                                <div class="p-3 border-b border-slate-800 flex justify-between items-center bg-slate-900/80 rounded-t-xl">
-                                    <h3 class="font-semibold text-slate-200 text-sm flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-red-500"></span> Blocaje & Aprobări</h3>
+                            <div class="w-[340px] flex flex-col bg-slate-900/30 border border-slate-800/60 rounded-2xl flex-shrink-0 max-h-full backdrop-blur-sm relative overflow-hidden">
+                                <div class="absolute top-0 left-0 w-full h-1 bg-red-500/50"></div>
+                                <div class="p-4 border-b border-slate-800/60 flex justify-between items-center">
+                                    <h3 class="font-bold text-slate-200 text-sm tracking-wide flex items-center gap-2">
+                                        <span class="w-2 h-2 rounded-full bg-red-500 shadow-[0_0_8px_rgba(239,68,68,0.8)]"></span> Blocaje & Aprobări
+                                    </h3>
                                 </div>
-                                <div class="p-3 flex-1 overflow-y-auto space-y-3 kanban-zone border-2 border-transparent transition-colors" ondrop="drop(event)" ondragover="allowDrop(event)" ondragleave="dragLeave(event)">
+                                <div class="p-3 flex-1 overflow-y-auto space-y-3 kanban-zone border-2 border-transparent transition-colors rounded-b-2xl" ondrop="drop(event)" ondragover="allowDrop(event)" ondragleave="dragLeave(event)">
                                     
-                                    <!-- Card Blocat semnalat de AI -->
-                                    <div class="bg-red-950/30 border border-red-500/50 p-4 rounded-lg cursor-grab active:cursor-grabbing shadow-sm hover:border-red-400/80 transition" draggable="true" ondragstart="drag(event)" id="card-4">
-                                        <div class="flex justify-between items-start mb-2">
-                                            <div class="text-xs text-red-400 font-bold uppercase tracking-wide">⚠️ Urgent - Legal</div>
+                                    <!-- Card Blocat -->
+                                    <div class="kanban-card bg-red-950/20 border border-red-500/40 hover:bg-red-950/40 p-4 rounded-xl cursor-grab active:cursor-grabbing shadow-lg shadow-red-900/10" draggable="true" ondragstart="drag(event)" id="card-4">
+                                        <div class="flex justify-between items-start mb-2.5">
+                                            <span class="text-[10px] uppercase font-bold tracking-wider text-red-400 bg-red-400/10 px-2 py-0.5 rounded border border-red-500/20">⚠️ Urgent - Legal</span>
                                         </div>
-                                        <h4 class="text-sm font-semibold text-slate-100 mb-2">Avizare etichete cf. legislației</h4>
-                                        <p class="text-[11px] text-slate-400 mb-3 border-l-2 border-red-500/50 pl-2">AI: Întârzierea acestui task de 2 zile riscă să blocheze startul producției.</p>
-                                        <div class="flex justify-between items-center">
-                                            <div class="w-6 h-6 rounded-full bg-rose-600 flex items-center justify-center text-[10px] text-white">LG</div>
-                                            <span class="text-xs text-red-400 font-semibold">Întârziat</span>
+                                        <h4 class="text-sm font-semibold text-slate-100 leading-snug mb-3">Avizare etichete cf. legislației</h4>
+                                        <div class="bg-slate-950/50 rounded-lg p-2.5 mb-4 border border-red-500/20">
+                                            <p class="text-[11px] text-slate-300 font-medium leading-relaxed">
+                                                <span class="text-red-400 font-bold">AI:</span> Întârzierea acestui task riscă să blocheze startul producției.
+                                            </p>
+                                        </div>
+                                        <div class="flex justify-between items-center pt-3 border-t border-red-900/50">
+                                            <span class="text-xs font-bold text-red-400">Întârziat</span>
+                                            <div class="w-6 h-6 rounded-full bg-rose-600 flex items-center justify-center text-[10px] font-bold text-white shadow-sm ring-2 ring-slate-900">LG</div>
                                         </div>
                                     </div>
 
@@ -195,16 +219,18 @@
                             </div>
 
                             <!-- Coloana 4: Finalizat -->
-                            <div class="w-80 flex flex-col bg-slate-900/40 border border-slate-800 rounded-xl flex-shrink-0 max-h-full">
-                                <div class="p-3 border-b border-slate-800 flex justify-between items-center bg-slate-900/80 rounded-t-xl">
-                                    <h3 class="font-semibold text-slate-200 text-sm flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-emerald-500"></span> Finalizat</h3>
+                            <div class="w-[340px] flex flex-col bg-slate-900/30 border border-slate-800/60 rounded-2xl flex-shrink-0 max-h-full backdrop-blur-sm">
+                                <div class="p-4 border-b border-slate-800/60 flex justify-between items-center">
+                                    <h3 class="font-bold text-slate-200 text-sm tracking-wide flex items-center gap-2">
+                                        <span class="w-2 h-2 rounded-full bg-emerald-500"></span> Finalizat
+                                    </h3>
                                 </div>
-                                <div class="p-3 flex-1 overflow-y-auto space-y-3 kanban-zone border-2 border-transparent transition-colors" ondrop="drop(event)" ondragover="allowDrop(event)" ondragleave="dragLeave(event)">
+                                <div class="p-3 flex-1 overflow-y-auto space-y-3 kanban-zone border-2 border-transparent transition-colors rounded-b-2xl" ondrop="drop(event)" ondragover="allowDrop(event)" ondragleave="dragLeave(event)">
                                     
-                                    <div class="bg-slate-900/80 border border-slate-800 p-4 rounded-lg opacity-60 cursor-grab active:cursor-grabbing" draggable="true" ondragstart="drag(event)" id="card-5">
-                                        <h4 class="text-sm font-semibold text-slate-400 line-through mb-2">Stabilire prețuri (Pricing)</h4>
-                                        <div class="flex justify-between items-center">
-                                            <span class="text-[10px] text-emerald-500">✓ Completat ieri</span>
+                                    <div class="kanban-card bg-slate-900/60 border border-slate-800/80 p-4 rounded-xl opacity-60 cursor-grab active:cursor-grabbing hover:opacity-80" draggable="true" ondragstart="drag(event)" id="card-5">
+                                        <h4 class="text-sm font-semibold text-slate-400 line-through mb-4">Stabilire prețuri (Pricing)</h4>
+                                        <div class="flex justify-between items-center pt-3 border-t border-slate-800">
+                                            <span class="text-[11px] font-bold text-emerald-600/80 uppercase tracking-wider">✓ Complet</span>
                                         </div>
                                     </div>
 
@@ -215,16 +241,15 @@
                     </div>
                 </div>
 
-                <!-- ALTE SECTIUNI -->
-                <div id="content-smartbox" class="content-section" style="display:none;"></div>
-                <div id="content-ai" class="content-section" style="display:none;"></div>
+                <!-- ALTE SECTIUNI (Golite pt demo) -->
+                <div id="content-smartbox" class="content-section flex-col" style="display:none;"></div>
+                <div id="content-ai" class="content-section flex-col" style="display:none;"></div>
 
             </div>
         </main>
     </div>
 
     <script>
-        // Navigare
         function handleLogin() {
             document.getElementById('auth-screen').classList.remove('active');
             document.getElementById('main-app').classList.add('active');
@@ -253,14 +278,12 @@
 
         // --- Logica pentru Drag & Drop Kanban ---
         function drag(ev) {
-            // Setăm id-ul elementului tras
             ev.dataTransfer.setData("text", ev.target.id);
-            ev.target.classList.add('opacity-50');
+            ev.target.style.opacity = "0.4";
         }
 
         function allowDrop(ev) {
             ev.preventDefault();
-            // Adaugă clasa de highlight zonei pe care survolăm
             let targetZone = ev.target.closest('.kanban-zone');
             if(targetZone) targetZone.classList.add('drag-over');
         }
@@ -276,30 +299,31 @@
             let draggedElement = document.getElementById(data);
             
             if(draggedElement) {
-                draggedElement.classList.remove('opacity-50');
+                draggedElement.style.opacity = "1";
             }
 
-            // Găsim zona corectă de drop (containerul cu clasa kanban-zone)
             let targetZone = ev.target.closest('.kanban-zone');
             
             if(targetZone && draggedElement) {
                 targetZone.classList.remove('drag-over');
                 targetZone.appendChild(draggedElement);
                 
-                // Opțional: dacă e mutat în "Finalizat", îi dăm o opacitate și îi tăiem titlul
+                // Styling pe "Finalizat"
                 if(targetZone.parentElement.querySelector('h3').innerText.includes('Finalizat')) {
-                    draggedElement.classList.add('opacity-60');
+                    draggedElement.classList.add('opacity-60', 'bg-slate-900/60');
+                    draggedElement.classList.remove('bg-slate-800/40', 'border-blue-500/30', 'border-red-500/40');
                     let title = draggedElement.querySelector('h4');
                     if(title && !title.classList.contains('line-through')) {
                         title.classList.add('line-through', 'text-slate-400');
-                        title.classList.remove('text-slate-100');
+                        title.classList.remove('text-slate-200', 'text-slate-100');
                     }
                 } else {
-                    draggedElement.classList.remove('opacity-60');
+                    draggedElement.classList.remove('opacity-60', 'bg-slate-900/60');
+                    draggedElement.classList.add('bg-slate-800/40');
                     let title = draggedElement.querySelector('h4');
                     if(title && title.classList.contains('line-through')) {
                         title.classList.remove('line-through', 'text-slate-400');
-                        title.classList.add('text-slate-100');
+                        title.classList.add('text-slate-200');
                     }
                 }
             }
