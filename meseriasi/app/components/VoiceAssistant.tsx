@@ -168,7 +168,7 @@ export default function VoiceAssistant() {
             <p className="voice-privacy">Microfonul funcționează doar în timpul sesiunii pornite de tine. Oprește-l când ai terminat.</p>
           </section>
         )}
-        <button className="voice-launcher" onClick={() => { if (open) { stopSession(); setOpen(false); } else { setOpen(true); } }} aria-label={open ? "Închide asistentul vocal" : "Deschide asistentul vocal"}>
+        <button className="voice-launcher" onClick={() => { if (open) { stopSession(); setOpen(false); } else { setOpen(true); void startSession(); } }} aria-label={open ? "Închide asistentul vocal" : "Deschide asistentul vocal"}>
           {open ? <X size={22} /> : <Mic size={22} />}<span>{open ? "Închide" : "Vorbește cu Scamio"}</span>
         </button>
       </div>
