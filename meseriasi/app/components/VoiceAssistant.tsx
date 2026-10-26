@@ -1,5 +1,7 @@
 "use client";
 
+import "./voice-assistant.css";
+
 import { useEffect, useRef, useState } from "react";
 import { Mic, MicOff, Volume2, X, LoaderCircle, MessageCircle } from "lucide-react";
 
