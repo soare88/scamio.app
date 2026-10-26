@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from "react";
 import {
-  Activity, ArrowDownRight, ArrowUpRight, Bell, BriefcaseBusiness, CalendarDays,
+  Activity, ArrowDownRight, ArrowUpRight, Bell, BriefcaseBusiness, CalendarDays, CarFront,
   Check, ChevronDown, CircleHelp, ClipboardList, Clock3, FileText, Filter,
   LayoutDashboard, Menu, Plus, Search, Settings2, Users, Wallet, X, MapPin,
   Phone, MoreHorizontal, Wrench, HardHat, TrendingUp
@@ -77,6 +77,7 @@ export default function Home() {
         <div className="nav-label">MENIU PRINCIPAL</div>
         <nav className="nav-list">{navItems.map(item => <button key={item.id} onClick={() => {setSection(item.id); setSearch(""); setMobileNav(false);}} className={`nav-item ${section === item.id ? "selected" : ""}`}><item.icon size={18}/><span>{item.label}</span>{item.count !== undefined && <em>{item.count}</em>}</button>)}</nav>
         <div className="nav-label secondary-label">GESTIUNE</div>
+        <a className="nav-item" href="/rent-a-car" style={{textDecoration:"none"}}><CarFront size={18}/><span>Rent-a-Car</span><span className="soon">NOU</span></a>
         <button className="nav-item disabled-item" onClick={() => setNotice("Modulul Devize va fi adăugat în următoarea etapă.")}><FileText size={18}/><span>Devize și oferte</span><span className="soon">URMEAZĂ</span></button>
         <button className="nav-item disabled-item" onClick={() => setNotice("Modulul Încasări va fi adăugat în următoarea etapă.")}><Wallet size={18}/><span>Încasări</span><span className="soon">URMEAZĂ</span></button>
         <button className="nav-item disabled-item" onClick={() => setNotice("Calendarul va fi adăugat în următoarea etapă.")}><CalendarDays size={18}/><span>Calendar</span><span className="soon">URMEAZĂ</span></button>
