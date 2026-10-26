@@ -75,7 +75,7 @@ export default function VoiceAssistant() {
       const tokenResponse = await fetch("/api/voice/session", { method: "POST" });
       const tokenData = await tokenResponse.json();
       if (!tokenResponse.ok) throw new Error(tokenData.error || "Nu am putut porni asistentul vocal.");
-      const ephemeralKey = tokenData.client_secret?.value;
+      const ephemeralKey = tokenData.value || tokenData.client_secret?.value;
       if (!ephemeralKey) throw new Error("Serverul nu a returnat cheia temporară pentru sesiune.");
 
       const pc = new RTCPeerConnection();
@@ -133,8 +133,9 @@ export default function VoiceAssistant() {
       await pc.setRemoteDescription({ type: "answer", sdp: await response.text() });
       setStatus("Se conectează microfonul…");
     } catch (error) {
+      const message = error instanceof Error ? error.message : "Nu am putut porni asistentul vocal.";
       stopSession();
-      setStatus(error instanceof Error ? error.message : "Nu am putut porni asistentul vocal.");
+      setStatus(message);
     }
   }
 
