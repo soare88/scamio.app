@@ -1,0 +1,18 @@
+
+/* Scamio OS voice assistant */
+.voice-assistant-root{position:fixed;right:24px;bottom:24px;z-index:1500;font-family:'DM Sans',sans-serif}
+.voice-launcher{display:flex;align-items:center;justify-content:center;gap:10px;border:0;border-radius:999px;background:#3568c0;color:#fff;padding:14px 19px;box-shadow:0 12px 34px #1d4b9c40;font-size:12px;font-weight:800;transition:transform .18s,box-shadow .18s}
+.voice-launcher:hover{transform:translateY(-2px);box-shadow:0 16px 40px #1d4b9c50}
+.voice-panel{width:min(390px,calc(100vw - 28px));height:min(570px,calc(100dvh - 105px));background:#fff;border:1px solid #e4e9f2;border-radius:18px;box-shadow:0 20px 70px #18243a30;display:flex;flex-direction:column;overflow:hidden;margin-bottom:12px}
+.voice-panel-header{display:flex;align-items:center;gap:11px;padding:17px;border-bottom:1px solid #eef0f5}
+.voice-brand-icon{width:38px;height:38px;border-radius:12px;display:grid;place-items:center;background:#e8effa;color:#3568c0}
+.voice-header-copy{flex:1;min-width:0}.voice-header-copy strong,.voice-header-copy span{display:block}.voice-header-copy strong{font-size:13px;color:#202b40}.voice-header-copy span{font-size:10px;color:#8992a3;margin-top:4px}
+.voice-close{width:32px;height:32px;border:0;border-radius:8px;background:#f5f7fa;color:#69758a;display:grid;place-items:center}
+.voice-status{display:flex;align-items:center;gap:8px;padding:11px 17px;background:#f8faff;color:#68758c;font-size:10px;min-height:38px}
+.voice-status-dot{width:7px;height:7px;background:#c1c8d4;border-radius:50%;flex-shrink:0}.voice-status-dot.live{background:#18a878;box-shadow:0 0 0 4px #18a8781c}
+.voice-transcript{padding:15px;overflow:auto;flex:1;display:flex;flex-direction:column;gap:10px;min-height:0}
+.voice-empty{margin:auto;text-align:center;max-width:260px;color:#8b95a7;display:flex;align-items:center;flex-direction:column;gap:9px;padding:20px 0}.voice-empty svg{color:#3568c0}.voice-empty strong{font-size:13px;color:#303b51}.voice-empty p{font-size:11px;line-height:1.6;margin:0}
+.voice-message{max-width:90%;border-radius:12px;padding:10px 12px;font-size:11px;line-height:1.55;white-space:pre-wrap;overflow-wrap:anywhere}.voice-message span{display:block;font-size:9px;font-weight:800;margin-bottom:4px;opacity:.75}.voice-message p{margin:0}.voice-message.user{align-self:flex-end;background:#e8effa;color:#263e6c;border-bottom-right-radius:4px}.voice-message.assistant{align-self:flex-start;background:#f4f6f9;color:#303b51;border-bottom-left-radius:4px}
+.voice-controls{display:flex;align-items:center;gap:12px;padding:14px 17px;border-top:1px solid #eef0f5}.voice-mic-button{width:48px;height:48px;display:grid;place-items:center;flex-shrink:0;border:0;border-radius:50%;background:#3568c0;color:#fff;box-shadow:0 4px 12px #3568c033}.voice-mic-button.is-listening{background:#d94c55;box-shadow:0 4px 12px #d94c5533}.voice-mic-button:disabled{opacity:.7;cursor:wait}.voice-controls strong,.voice-controls span{display:block}.voice-controls strong{font-size:11px;color:#303b51}.voice-controls span{font-size:10px;color:#8992a3;margin-top:4px}.voice-privacy{font-size:9px;line-height:1.5;color:#9aa2b0;padding:0 17px 14px;margin:0}
+.voice-spin{animation:voice-spin 1s linear infinite}@keyframes voice-spin{to{transform:rotate(360deg)}}
+@media(max-width:700px){.voice-assistant-root{right:12px;bottom:12px}.voice-launcher{padding:13px 16px}.voice-panel{width:calc(100vw - 24px);height:min(590px,calc(100dvh - 85px))}}
